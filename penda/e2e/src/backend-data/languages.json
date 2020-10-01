@@ -1,0 +1,202 @@
+[
+    {
+        "code": "de",
+        "description": "German"
+    },
+    {
+        "code": "hi",
+        "description": "Hindi"
+    },
+    {
+        "code": "ps",
+        "description": "Pashto"
+    },
+    {
+        "code": "tw",
+        "description": "Traditional Chinese"
+    },
+    {
+        "code": "pt",
+        "description": "Portuguese"
+    },
+    {
+        "code": "dk",
+        "description": "Danish"
+    },
+    {
+        "code": "lt",
+        "description": "Lithuanian"
+    },
+    {
+        "code": "hr",
+        "description": "Croatian"
+    },
+    {
+        "code": "lv",
+        "description": "Latvian"
+    },
+    {
+        "code": "hu",
+        "description": "Hungarian"
+    },
+    {
+        "code": "uk",
+        "description": "Ukrainian"
+    },
+    {
+        "code": "id",
+        "description": "Indonesian"
+    },
+    {
+        "code": "ur",
+        "description": "Urdu"
+    },
+    {
+        "code": "ml",
+        "description": "Malay"
+    },
+    {
+        "code": "af",
+        "description": "Afrikaans"
+    },
+    {
+        "code": "el",
+        "description": "Greek"
+    },
+    {
+        "code": "en",
+        "description": "English"
+    },
+    {
+        "code": "is",
+        "description": "Icelandic"
+    },
+    {
+        "code": "it",
+        "description": "Italian"
+    },
+    {
+        "code": "es",
+        "description": "Spanish"
+    },
+    {
+        "code": "zh",
+        "description": "Simplified Chinese"
+    },
+    {
+        "code": "et",
+        "description": "Estonian"
+    },
+    {
+        "code": "prs",
+        "description": "Dari"
+    },
+    {
+        "code": "ar",
+        "description": "Arabic"
+    },
+    {
+        "code": "vi",
+        "description": "Vietnamese"
+    },
+    {
+        "code": "ja",
+        "description": "Japanese"
+    },
+    {
+        "code": "az",
+        "description": "Azeri"
+    },
+    {
+        "code": "fa",
+        "description": "Farsi"
+    },
+    {
+        "code": "ro",
+        "description": "Romanian"
+    },
+    {
+        "code": "nl",
+        "description": "Dutch"
+    },
+    {
+        "code": "no",
+        "description": "Norwegian"
+    },
+    {
+        "code": "fi",
+        "description": "Finnish"
+    },
+    {
+        "code": "ru",
+        "description": "Russian"
+    },
+    {
+        "code": "bg",
+        "description": "Bulgarian"
+    },
+    {
+        "code": "fr",
+        "description": "French"
+    },
+    {
+        "code": "br",
+        "description": "Brazilian Portuguese"
+    },
+    {
+        "code": "fy",
+        "description": "Frisian"
+    },
+    {
+        "code": "sk",
+        "description": "Slovak"
+    },
+    {
+        "code": "sl",
+        "description": "Slovenian"
+    },
+    {
+        "code": "ca",
+        "description": "Catalan"
+    },
+    {
+        "code": "sr",
+        "description": "Serbian"
+    },
+    {
+        "code": "sv",
+        "description": "Swedish"
+    },
+    {
+        "code": "ko",
+        "description": "Korean"
+    },
+    {
+        "code": "cs",
+        "description": "Czech"
+    },
+    {
+        "code": "th",
+        "description": "Thai"
+    },
+    {
+        "code": "la",
+        "description": "Latin"
+    },
+    {
+        "code": "pl",
+        "description": "Polish"
+    },
+    {
+        "code": "da",
+        "description": "Canadian French"
+    },
+    {
+        "code": "he",
+        "description": "Hebrew"
+    },
+    {
+        "code": "tr",
+        "description": "Turkish"
+    }
+]
