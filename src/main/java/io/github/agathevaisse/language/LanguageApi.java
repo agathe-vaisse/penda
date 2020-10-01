@@ -5,9 +5,11 @@ import spark.Response;
 
 import java.util.List;
 
+import static io.github.agathevaisse.DictionaryApp.API_ROOT_PATH;
+
 public class LanguageApi {
 
-  public static final String ALL_LANGUAGES_PATH = "/languages";
+  public static final String ALL_LANGUAGES_PATH = API_ROOT_PATH + "/languages";
 
   private final LanguageRepository languageRepository;
 

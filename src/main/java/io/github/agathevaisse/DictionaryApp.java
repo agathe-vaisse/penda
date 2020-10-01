@@ -14,6 +14,8 @@ import static io.github.agathevaisse.config.PropertiesLoader.fromClasspathResour
 
 public class DictionaryApp {
 
+  public static final String API_ROOT_PATH="/api";
+
   public static void main(String[] args) {
     SimpleEnvironment environment = new SimpleEnvironment(fromClasspathResource("/application.properties"));
     int port = environment.getOrDefault("port", Integer::parseInt, 8080);
