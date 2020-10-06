@@ -1,0 +1,11 @@
+<h1>Penda</h1>
+<form [formGroup]="languageForm" (ngSubmit)="onSubmit(languageForm.value)">
+    <label for="languages">Select a language</label>
+    <select id="languages"
+            formControlName="language"
+            [ngClass]="{'ng-invalid':language.invalid && (language.dirty || language.touched)}">
+        <option value=""></option>
+        <option *ngFor="let language of (languages$ | async)" [value]="language.code">{{language.description}}</option>
+    </select>
+    <button id="language-submit" type="submit">Start game</button>
+</form>
