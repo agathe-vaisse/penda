@@ -14,7 +14,7 @@ public class WordApi {
     }
 
     public Word postRandomWord(Request request, Response response) {
-        String languageCode = request.params("language");
+        String languageCode = request.queryParams("language");
         if (languageCode == null) {
             response.header("Content-Type", "text/plain");
             response.status(400);

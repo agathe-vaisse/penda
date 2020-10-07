@@ -21,7 +21,7 @@ public class WordApiTest {
         Word word = new Word("panda");
         when(wordRepository.findRandom("fr")).thenReturn(word);
         Request request = mock(Request.class);
-        when(request.params("language")).thenReturn("fr");
+        when(request.queryParams("language")).thenReturn("fr");
         Response response = mock(Response.class, Mockito.RETURNS_DEEP_STUBS);
 
         Word result = wordApi.postRandomWord(request, response);
