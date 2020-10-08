@@ -1,5 +1,7 @@
 package io.github.agathevaisse.word;
 
+import io.github.agathevaisse.functional.Either;
+import io.github.agathevaisse.http.HttpError;
 import spark.Request;
 import spark.Response;
 
@@ -13,17 +15,16 @@ public class WordApi {
         this.wordRepository = wordRepository;
     }
 
-    public Word postRandomWord(Request request, Response response) {
+    public Either<HttpError, Word> postRandomWord(Request request, Response response) {
         String languageCode = request.queryParams("language");
         if (languageCode == null) {
-            response.header("Content-Type", "text/plain");
             response.status(400);
-            response.body("language code not set");
-            return null;
+            response.header("Content-Type", "text/plain");
+            response.body("missing language code");
+            return Either.left(new HttpError("missing language code"));
         }
-        response.header("Content-Type", "application/json");
-        Word word = wordRepository.findRandom(languageCode);
         response.status(200);
-        return word;
+        response.header("Content-Type", "application/json");
+        return Either.right(wordRepository.findRandom(languageCode));
     }
 }
