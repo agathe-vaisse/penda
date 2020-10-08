@@ -3,6 +3,7 @@ import { AppComponent } from './app.component';
 import { LanguageService } from './language.service';
 import { Language } from './language';
 import {of} from 'rxjs';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 describe('AppComponent', () => {
   let fixture;
@@ -24,6 +25,10 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
+      imports: [
+        FormsModule,
+        ReactiveFormsModule
+      ],
       providers: [
         {provide: LanguageService, useValue: languageServiceSpy}
       ]
@@ -44,7 +49,14 @@ describe('AppComponent', () => {
   it('should render list of languages', () => {
     languageServiceSpy.findAll.and.returnValue(of([english, french]))
     fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(Array.from(compiled.querySelectorAll('select option')).map((e: any) => e.textContent)).toEqual([english.description, french.description]);
+    const dom = fixture.nativeElement;
+    expect(Array.from(dom.querySelectorAll('form select option:not(:first-child)')).map((e: any) => e.textContent)).toEqual([english.description, french.description]);
+  });
+
+  it('fails to submit a language', () => {
+    const dom = fixture.nativeElement;
+    dom.querySelector('button[type=submit]').click();
+    fixture.detectChanges();
+    expect(Array.from(dom.querySelector('form select').classList)).toContain('ng-invalid');
   });
 });

@@ -1,4 +1,8 @@
 <h1>Penda</h1>
-<select>
-  <option *ngFor="let language of (languages$ | async)" [value]="language.code">{{language.description}}</option>
-</select>
+<form [formGroup]="languageForm" (ngSubmit)="onSubmit(languageForm.value)">
+  <select [ngClass]="{'ng-invalid':languageForm?.invalid}"> 
+    <option value=""></option>
+    <option *ngFor="let language of (languages$ | async)" [value]="language.code">{{language.description}}</option>
+  </select>
+  <button type="submit">Select language</button>
+</form>
