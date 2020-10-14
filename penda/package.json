@@ -7,7 +7,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "pree2e": "npx webdriver-manager update && node e2e/src/fake-language-api-server.js &",
+    "pree2e": "npm-run-all pree2e:*",
+    "pree2e:webdriver-manager": "npx webdriver-manager update",
+    "pree2e:fake-server": "node e2e/src/fake-language-api-server.js",
     "e2e": "ng e2e",
     "poste2e": "pkill -f 'node e2e/src/fake-language-api-server.js'"
   },

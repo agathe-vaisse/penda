@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {LanguageService} from './language.service';
 import {Observable} from 'rxjs';
 import {Language} from './language';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,8 @@ export class AppComponent {
   languageForm: FormGroup;
 
   constructor(private languageService: LanguageService,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+    private router: Router) {
 
       this.languageForm = this.formBuilder.group({
           language: ['', [
@@ -27,6 +29,9 @@ export class AppComponent {
   }
 
   onSubmit(value: any) {
+      if(this.languageForm.valid) {
+          this.router.navigate(['game'], {replaceUrl: true, queryParams: { language: this.languageForm.get('language').value }});
+      }
   }
 
   get language() {

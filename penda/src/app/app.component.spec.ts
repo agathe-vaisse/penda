@@ -1,15 +1,17 @@
-import { TestBed } from '@angular/core/testing';
-import { AppComponent } from './app.component';
-import { LanguageService } from './language.service';
-import { Language } from './language';
+import {TestBed} from '@angular/core/testing';
+import {AppComponent} from './app.component';
+import {LanguageService} from './language.service';
+import {Language} from './language';
 import {of} from 'rxjs';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {Router} from "@angular/router";
 
 describe('AppComponent', () => {
   let fixture;
   let app;
   let dom;
-  let languageServiceSpy;
+    let languageServiceSpy;
+  let routerSpy: { navigate: jasmine.Spy };
 
   const english = {
     code: "en",
@@ -21,6 +23,7 @@ describe('AppComponent', () => {
   } as Language;
 
   beforeEach(async () => {
+      routerSpy = {navigate: jasmine.createSpy('navigate')};
     languageServiceSpy = jasmine.createSpyObj<LanguageService>(['findAll']);
     languageServiceSpy.findAll.and.returnValue(of([english, french]))
     await TestBed.configureTestingModule({
@@ -32,7 +35,8 @@ describe('AppComponent', () => {
         ReactiveFormsModule
       ],
       providers: [
-        {provide: LanguageService, useValue: languageServiceSpy}
+        {provide: LanguageService, useValue: languageServiceSpy},
+          {provide: Router, useValue: routerSpy}
       ]
     }).compileComponents();
   });
@@ -64,4 +68,17 @@ describe('AppComponent', () => {
 
     expect(Array.from(dom.querySelector('form select').classList)).toContain('ng-invalid');
   });
+
+  fit('should redirect to game component', () => {
+      fixture.detectChanges(); // needed by [formGroup] directive
+      const languageSelector = dom.querySelector('select');
+      languageSelector.value=languageSelector.options[2];
+      languageSelector.dispatchEvent(new Event('change'));
+      fixture.detectChanges();
+      dom.querySelector('button[type=submit]').click();
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+          expect(routerSpy.navigate).toHaveBeenCalledWith(['game?language=fr'], {replaceUrl: true});
+      });
+  })
 });
