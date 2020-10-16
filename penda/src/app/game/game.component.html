@@ -1,1 +1,3 @@
-<p>game works!</p>
+<p id="guess" *ngIf="this.word$ | async as word">
+  <span class="placeholder" *ngFor="let letter of word.value.split('')">_</span>
+</p>

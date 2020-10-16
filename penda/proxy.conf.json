@@ -2,5 +2,9 @@
     "/api/languages": {
         "target": "http://localhost:8080",
         "secure": false
+    },
+    "/api/word": {
+        "target": "http://localhost:8080",
+        "secure": false
     }
 }
