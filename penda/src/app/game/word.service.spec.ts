@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Word } from './word';
-import { LanguageCode } from './language';
+import { LanguageCode } from '../language-selection/language';
 import { WordService } from './word.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 

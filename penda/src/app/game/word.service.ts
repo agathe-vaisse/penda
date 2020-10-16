@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { Observable } from 'rxjs';
-import { LanguageCode } from './language';
+import { LanguageCode } from '../language-selection/language';
 import { Word } from './word';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
