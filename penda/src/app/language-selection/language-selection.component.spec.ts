@@ -23,7 +23,7 @@ describe('AppComponent', () => {
   } as Language;
 
   beforeEach(async () => {
-      routerSpy = {navigate: jasmine.createSpy('navigate')};
+    routerSpy = {navigate: jasmine.createSpy('navigate')};
     languageServiceSpy = jasmine.createSpyObj<LanguageService>(['findAll']);
     languageServiceSpy.findAll.and.returnValue(of([english, french]))
     await TestBed.configureTestingModule({
@@ -36,7 +36,7 @@ describe('AppComponent', () => {
       ],
       providers: [
         {provide: LanguageService, useValue: languageServiceSpy},
-          {provide: Router, useValue: routerSpy}
+        {provide: Router, useValue: routerSpy}
       ]
     }).compileComponents();
   });
@@ -69,16 +69,17 @@ describe('AppComponent', () => {
     expect(Array.from(dom.querySelector('form select').classList)).toContain('ng-invalid');
   });
 
-  fit('should redirect to game component', () => {
+  it('should redirect to game component', () => {
+      const selectedLanguageCode = french.code;
+
       fixture.detectChanges(); // needed by [formGroup] directive
       const languageSelector = dom.querySelector('select');
-      languageSelector.value=languageSelector.options[2];
+      languageSelector.value = selectedLanguageCode;
       languageSelector.dispatchEvent(new Event('change'));
-      fixture.detectChanges();
       dom.querySelector('button[type=submit]').click();
-      fixture.detectChanges();
-      fixture.whenStable().then(() => {
-          expect(routerSpy.navigate).toHaveBeenCalledWith(['game?language=fr'], {replaceUrl: true});
-      });
+
+      expect(routerSpy.navigate)
+          .toHaveBeenCalledWith(['/game'],
+            {replaceUrl: true, queryParams: {language: selectedLanguageCode}});
   })
 });

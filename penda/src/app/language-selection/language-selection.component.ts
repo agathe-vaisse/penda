@@ -21,7 +21,7 @@ export class LanguageSelectionComponent {
         this.languageForm = this.formBuilder.group({
             language: ['', [
                 Validators.required,
-                Validators.pattern(/.*[\S].*/)
+                Validators.pattern(/^.*[\S]+.*$/)
             ]]
         });
         this.languages$ = this.languageService.findAll();
