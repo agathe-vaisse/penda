@@ -1,3 +1,11 @@
-<p id="guess" *ngIf="this.word$ | async as word">
-  <span class="placeholder" *ngFor="let letter of word.value.split('')">_</span>
-</p>
+<div *ngIf="this.gameState$ | async as gameState">
+    <p id="attempts">{{ attemptsLeft(gameState) }}</p>
+    <span class="placeholder" *ngFor="let character of characters(gameState)">{{ character }}</span>
+    <form [formGroup]="gameForm" (ngSubmit)="onSubmit(gameForm.value)">
+        <input
+            formControlName="attempt"
+            [ngClass]="{'ng-invalid':attempt.invalid && (attempt.dirty || attempt.touched)}"
+            type="text" maxlength="1" id="letter" />
+        <button id="try" type="submit">Try</button>
+    </form>
+</div>
