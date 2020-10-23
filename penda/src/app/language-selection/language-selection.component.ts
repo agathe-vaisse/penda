@@ -15,10 +15,10 @@ export class LanguageSelectionComponent {
     languageForm: FormGroup;
 
     constructor(private languageService: LanguageService,
-                private formBuilder: FormBuilder,
+                formBuilder: FormBuilder,
                 private router: Router) {
 
-        this.languageForm = this.formBuilder.group({
+        this.languageForm = formBuilder.group({
             language: ['', [
                 Validators.required,
                 Validators.pattern(/^.*[\S]+.*$/)
@@ -31,7 +31,7 @@ export class LanguageSelectionComponent {
         if (this.languageForm.valid) {
             this.router.navigate(['/game'], {
                 replaceUrl: true,
-                queryParams: {language: this.languageForm.get('language').value}
+                queryParams: {language: value.language}
             });
         }
     }
