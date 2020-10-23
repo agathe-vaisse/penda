@@ -8,8 +8,6 @@ import org.mockito.Mockito;
 import spark.Request;
 import spark.Response;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;

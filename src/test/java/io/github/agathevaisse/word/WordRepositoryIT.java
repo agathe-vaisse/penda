@@ -1,56 +1,51 @@
-package io.github.agathevaisse.language;
+package io.github.agathevaisse.word;
 
 import io.github.agathevaisse.Credentials;
-import io.github.agathevaisse.HttpClients;
 import io.github.agathevaisse.LexicalaBasicAuthenticator;
 import io.github.agathevaisse.TestHttpServer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
-import java.util.List;
 
 import static io.github.agathevaisse.Filters.contentNegotiationFilter;
 import static io.github.agathevaisse.HttpClients.httpClient;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class LanguageRepositoryIT {
+class WordRepositoryIT {
 
     public static final Credentials CREDENTIALS = Credentials.of("fakeuser", "fakepassword".toCharArray());
+
+    private final Word randomWord = new Word("panda");
 
     @RegisterExtension
     TestHttpServer fakeLexicalaServer = TestHttpServer.withRandomPort()
         .withHandler(
-            new LexicalaLanguageFakeApi(
-                new Language("fr", "French"),
-                new Language("en", "English")),
+            new LexicalaSearchFakeApi(randomWord),
             new LexicalaBasicAuthenticator(CREDENTIALS),
             contentNegotiationFilter(
                 "*/*", "application/*", "application/json"));
 
+
     @Test
-    void fetches_available_languages() {
-        LanguageRepository repository = new LanguageRepository(fakeLexicalaServer.getAddress(), httpClient(CREDENTIALS));
+    void fetches_random_word() {
+        WordRepository repository = new WordRepository(fakeLexicalaServer.getAddress(), httpClient(CREDENTIALS));
 
-        List<Language> languages = repository.findAll();
+        Word word = repository.findRandom("fr");
 
-        assertThat(languages)
-            .containsOnlyOnce(
-                new Language("fr", "French"),
-                new Language("en", "English")
-            );
+        assertThat(word).isEqualTo(randomWord);
     }
 
     @Test
-    void fails_fetching_languages_with_unsuccessful_authentication() {
+    void fails_fetching_random_word_with_unsuccessful_authentication() {
         Credentials wrongCredentials = Credentials.of(CREDENTIALS.getUsername(), new char[]{'n', 'o', 'p', 'e'});
-        LanguageRepository repository = new LanguageRepository(fakeLexicalaServer.getAddress(), httpClient(wrongCredentials));
 
-        assertThatThrownBy(repository::findAll)
+        WordRepository repository = new WordRepository(fakeLexicalaServer.getAddress(), httpClient(wrongCredentials));
+
+        assertThatThrownBy(() -> repository.findRandom("en"))
             .isInstanceOf(RuntimeException.class)
             .hasCauseInstanceOf(IOException.class)
             .hasMessageContaining("too many authentication attempts");
     }
-
 }

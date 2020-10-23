@@ -19,7 +19,6 @@ public class DictionaryApp {
 
     public static final String API_ROOT_PATH = "/api";
 
-    // TODO: introduce Either<Error, X> on XxxApi method return types and adapt Visitor
     public static void main(String[] args) {
         SimpleEnvironment environment = new SimpleEnvironment(fromClasspathResource("/application.properties"));
         int port = environment.getOrDefault("port", Integer::parseInt, 8080);

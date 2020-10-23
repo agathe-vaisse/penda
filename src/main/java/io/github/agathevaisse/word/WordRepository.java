@@ -1,6 +1,5 @@
 package io.github.agathevaisse.word;
 
-import io.github.agathevaisse.language.Language;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -9,7 +8,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Optional;
 
 public class WordRepository {
 
