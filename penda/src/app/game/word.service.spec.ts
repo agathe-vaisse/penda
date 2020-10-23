@@ -35,7 +35,7 @@ describe('WordService', () => {
       done();
     });
 
-    const req = httpMock.expectOne(`/api/word?language=fr`);
+    const req = httpMock.expectOne(`/api/words?language=fr`);
     expect(req.request.method).toBe('POST');
     req.flush(panda);
   });

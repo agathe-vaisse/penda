@@ -10,7 +10,7 @@
     "pree2e": "npm run webdriver-manager && npm run fake-server &",
     "webdriver-manager": "npx webdriver-manager update",
     "fake-server": "node e2e/src/fake-language-api-server.js",
-    "e2e": "ng e2e",
+    "e2e": "ng e2e || npm run poste2e",
     "poste2e": "pkill -f 'node e2e/src/fake-language-api-server.js'"
   },
   "private": true,

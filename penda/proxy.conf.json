@@ -3,7 +3,7 @@
         "target": "http://localhost:8080",
         "secure": false
     },
-    "/api/word": {
+    "/api/words": {
         "target": "http://localhost:8080",
         "secure": false
     }

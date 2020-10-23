@@ -7,7 +7,7 @@ import spark.Response;
 
 public class WordApi {
 
-    public static final String RANDOM_WORD_PATH = "/api/word";
+    public static final String RANDOM_WORD_PATH = "/api/words";
 
     private final WordRepository wordRepository;
 

@@ -1,17 +1,25 @@
-import { AppPage } from './app.po';
+import { LanguageSelectionPage } from './language-selection.po';
 import { browser, logging } from 'protractor';
+import {GamePage} from "./game.po";
 
 describe('workspace-project App', () => {
-  let page: AppPage;
+  let languageSelectionPage: LanguageSelectionPage;
+  let gamePage: GamePage;
 
   beforeEach(() => {
-    page = new AppPage();
+    languageSelectionPage = new LanguageSelectionPage();
+    languageSelectionPage.navigateTo();
   });
 
   it('should display welcome message', () => {
-    page.navigateTo();
-    expect(page.getTitleText()).toEqual('Penda');
+    expect(languageSelectionPage.getTitleText()).toEqual('Penda');
   });
+
+  it('should start game after language selection', () => {
+      languageSelectionPage.selectLanguage("French");
+      gamePage = new GamePage();
+      expect(gamePage.isCurrentPage()).toBe(true);
+    })
 
   afterEach(async () => {
     // Assert that there are no errors emitted from the browser

@@ -14,7 +14,7 @@ export class WordService {
   constructor(private http: HttpClient) { }
 
   public findOneRandomly(languageCode: LanguageCode): Observable<Word> {
-    return this.http.post(`/api/word?language=${languageCode.code}`, {})
+    return this.http.post(`/api/words?language=${languageCode.code}`, {})
     .pipe(
       map((data:any) => data as Word)
     );
