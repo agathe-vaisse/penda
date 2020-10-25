@@ -6,7 +6,7 @@ export class LanguageSelectionPage {
     }
 
     getTitleText(): Promise<string> {
-        return element(by.css('app-root h1')).getText() as Promise<string>;
+        return element(by.css('h1')).getText() as Promise<string>;
     }
 
     selectLanguage(language: string): promise.Promise<void> {

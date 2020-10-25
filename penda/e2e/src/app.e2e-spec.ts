@@ -12,7 +12,7 @@ describe('workspace-project App', () => {
   });
 
   it('should display welcome message', () => {
-    expect(languageSelectionPage.getTitleText()).toEqual('Penda');
+    expect(languageSelectionPage.getTitleText()).toEqual('🐾 Penda');
   });
 
   it('should start game after language selection', () => {
