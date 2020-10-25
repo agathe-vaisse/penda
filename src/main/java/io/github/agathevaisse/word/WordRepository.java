@@ -1,5 +1,6 @@
 package io.github.agathevaisse.word;
 
+import io.github.agathevaisse.http.UpstreamException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -37,11 +38,11 @@ public class WordRepository {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             int statusCode = response.statusCode();
             if (statusCode == 403 || statusCode == 500) {
-                throw new RuntimeException(parseError(response));
+                throw new UpstreamException(parseError(response));
             }
             return word(response);
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e.getMessage(), e);
+            throw new UpstreamException(e.getMessage(), e);
         }
     }
 
@@ -49,7 +50,17 @@ public class WordRepository {
         JSONObject jsonObject = new JSONObject(response.body());
         JSONArray words = jsonObject.getJSONArray("results");
         JSONObject word = words.getJSONObject(0);
-        return new Word(word.getJSONObject("headword").getString("text"));
+        return new Word(extractHeadword(word.get("headword")).getString("text"));
+    }
+
+    private JSONObject extractHeadword(Object headWord) {
+        if (headWord instanceof JSONArray) {
+            return ((JSONArray) headWord).getJSONObject(0);
+        }
+        if (headWord instanceof JSONObject) {
+            return ((JSONObject) headWord);
+        }
+        throw new UpstreamException(String.format("unpexpected headword type: %s", headWord));
     }
 
     private String parseError(HttpResponse<String> response) {

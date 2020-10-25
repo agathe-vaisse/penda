@@ -2,18 +2,21 @@ package io.github.agathevaisse;
 
 import io.github.agathevaisse.config.SimpleEnvironment;
 import io.github.agathevaisse.http.BasicAuthenticator;
+import io.github.agathevaisse.http.UpstreamException;
 import io.github.agathevaisse.language.LanguageApi;
-import io.github.agathevaisse.language.LanguageJsonVisitor;
 import io.github.agathevaisse.language.LanguageRepository;
 import io.github.agathevaisse.word.WordApi;
-import io.github.agathevaisse.word.WordJsonVisitor;
 import io.github.agathevaisse.word.WordRepository;
-import spark.Spark;
+import org.json.JSONObject;
 
 import java.net.Authenticator;
 import java.net.http.HttpClient;
 
 import static io.github.agathevaisse.config.PropertiesLoader.fromClasspathResource;
+import static spark.Spark.exception;
+import static spark.Spark.get;
+import static spark.Spark.port;
+import static spark.Spark.post;
 
 public class DictionaryApp {
 
@@ -25,9 +28,15 @@ public class DictionaryApp {
         HttpClient httpClient = lexicalaHttpClient(environment);
         LanguageApi languageApi = languageApi(languageRepository(environment, httpClient));
         WordApi wordApi = wordApi(wordRepository(environment, httpClient));
-        Spark.port(port);
-        Spark.get(LanguageApi.ALL_LANGUAGES_PATH, languageApi::getAllLanguages, LanguageJsonVisitor::visitAll);
-        Spark.post(WordApi.RANDOM_WORD_PATH, wordApi::postRandomWord, WordJsonVisitor::visit);
+
+        port(port);
+        exception(UpstreamException.class, (exception, request, response) -> {
+            response.status(500);
+            response.header("Content-Type", "application/json");
+            response.body(new JSONObject().put("error", exception.toString()).toString());
+        });
+        get(LanguageApi.ALL_LANGUAGES_PATH, languageApi::getAllLanguages);
+        post(WordApi.RANDOM_WORD_PATH, wordApi::postRandomWord);
     }
 
     private static LanguageApi languageApi(LanguageRepository languageRepository) {

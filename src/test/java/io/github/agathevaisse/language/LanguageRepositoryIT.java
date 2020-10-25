@@ -1,7 +1,6 @@
 package io.github.agathevaisse.language;
 
 import io.github.agathevaisse.Credentials;
-import io.github.agathevaisse.HttpClients;
 import io.github.agathevaisse.LexicalaBasicAuthenticator;
 import io.github.agathevaisse.TestHttpServer;
 import org.junit.jupiter.api.Test;

@@ -1,5 +1,6 @@
 package io.github.agathevaisse.language;
 
+import io.github.agathevaisse.http.UpstreamException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -33,11 +34,11 @@ public class LanguageRepository {
     try {
       HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
       if (response.statusCode() == 500) {
-        throw new RuntimeException(parseError(response));
+        throw new UpstreamException(parseError(response));
       }
       return parseResponse(response);
     } catch (IOException | InterruptedException e) {
-      throw new RuntimeException(e.getMessage(), e);
+      throw new UpstreamException(e.getMessage(), e);
     }
   }
 
