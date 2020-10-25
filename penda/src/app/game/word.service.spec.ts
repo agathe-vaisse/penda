@@ -9,10 +9,10 @@ describe('WordService', () => {
   let service: WordService;
   let httpMock: HttpTestingController;
   const panda = {
-    value: "panda"
+    value: 'panda'
   } as Word;
   const french = {
-    code: "fr"
+    code: 'fr'
   } as LanguageCode;
 
   beforeEach(() => {

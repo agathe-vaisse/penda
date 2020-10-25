@@ -3,4 +3,4 @@ export interface Language {
     description: string;
 }
 
-export type LanguageCode = Pick<Language, "code">
+export type LanguageCode = Pick<Language, 'code'>;

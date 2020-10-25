@@ -8,12 +8,12 @@ describe('LanguageService', () => {
   let service: LanguageService;
   let httpMock: HttpTestingController;
   const english = {
-    code: "en",
-    description: "English"
+    code: 'en',
+    description: 'English'
   } as Language;
   const french = {
-    code: "fr",
-    description: "French"
+    code: 'fr',
+    description: 'French'
   } as Language;
 
   beforeEach(() => {
