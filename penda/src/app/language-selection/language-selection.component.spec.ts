@@ -4,28 +4,28 @@ import {LanguageService} from './language.service';
 import {Language} from './language';
 import {of} from 'rxjs';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {Router, RouterModule} from "@angular/router";
+import {Router, RouterModule} from '@angular/router';
 
 describe('AppComponent', () => {
   let fixture;
   let app;
   let dom;
-    let languageServiceSpy;
+  let languageServiceSpy;
   let routerSpy: { navigate: jasmine.Spy };
 
   const english = {
-    code: "en",
-    description: "English"
+    code: 'en',
+    description: 'English'
   } as Language;
   const french = {
-    code: "fr",
-    description: "French"
+    code: 'fr',
+    description: 'French'
   } as Language;
 
   beforeEach(async () => {
     routerSpy = {navigate: jasmine.createSpy('navigate')};
     languageServiceSpy = jasmine.createSpyObj<LanguageService>(['findAll']);
-    languageServiceSpy.findAll.and.returnValue(of([english, french]))
+    languageServiceSpy.findAll.and.returnValue(of([english, french]));
     await TestBed.configureTestingModule({
       declarations: [
         LanguageSelectionComponent
@@ -50,7 +50,7 @@ describe('AppComponent', () => {
 
   it('should fetch languages', () => {
     expect(languageServiceSpy.findAll).toHaveBeenCalledTimes(1);
-  })
+  });
 
   it('should render list of languages', () => {
     fixture.detectChanges();
@@ -81,5 +81,5 @@ describe('AppComponent', () => {
       expect(routerSpy.navigate)
           .toHaveBeenCalledWith(['/game'],
             {replaceUrl: true, queryParams: {language: selectedLanguageCode}});
-  })
+  });
 });

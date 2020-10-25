@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Params} from "@angular/router";
-import {Observable, Subscription} from "rxjs";
-import {WordService} from "./word.service";
-import {Word} from "./word";
-import {LanguageCode} from "../language-selection/language";
+import {ActivatedRoute, Params} from '@angular/router';
+import {Observable, Subscription} from 'rxjs';
+import {WordService} from './word.service';
+import {Word} from './word';
+import {LanguageCode} from '../language-selection/language';
 
 @Component({
   templateUrl: './game.component.html',
@@ -25,9 +25,9 @@ export class GameComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.queryParamSubscription = this.queryParams$.subscribe((params) => {
-            const language = params['language'];
-            this.word$ = this.wordService.findOneRandomly(<LanguageCode>{code: language});
-        })
+            const language = params.language;
+            this.word$ = this.wordService.findOneRandomly({code: language} as LanguageCode);
+        });
     }
 
     ngOnDestroy(): void {

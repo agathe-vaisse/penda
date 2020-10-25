@@ -1,6 +1,6 @@
 import { LanguageSelectionPage } from './language-selection.po';
 import { browser, logging } from 'protractor';
-import {GamePage} from "./game.po";
+import {GamePage} from './game.po';
 
 describe('workspace-project App', () => {
   let languageSelectionPage: LanguageSelectionPage;
@@ -16,10 +16,10 @@ describe('workspace-project App', () => {
   });
 
   it('should start game after language selection', () => {
-      languageSelectionPage.selectLanguage("French");
+      languageSelectionPage.selectLanguage('French');
       gamePage = new GamePage();
       expect(gamePage.isCurrentPage()).toBe(true);
-    })
+    });
 
   afterEach(async () => {
     // Assert that there are no errors emitted from the browser

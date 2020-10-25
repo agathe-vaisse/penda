@@ -19,6 +19,6 @@ export class LanguageService {
         const languages = data as Language[];
         return languages.sort((language1, language2) => language1.code.localeCompare(language2.code, 'en'));
       })
-    )
+    );
   }
 }

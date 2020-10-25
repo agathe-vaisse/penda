@@ -1,10 +1,10 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {GameComponent} from './game.component';
-import {of} from "rxjs";
-import {WordService} from "./word.service";
-import {Word} from "./word";
-import {ActivatedRoute, Params} from "@angular/router";
+import {of} from 'rxjs';
+import {WordService} from './word.service';
+import {Word} from './word';
+import {ActivatedRoute, Params} from '@angular/router';
 
 describe('GameComponent', () => {
   let component: GameComponent;
@@ -14,8 +14,8 @@ describe('GameComponent', () => {
 
   beforeEach(async () => {
     wordServiceSpy = jasmine.createSpyObj<WordService>(['findOneRandomly']);
-    wordServiceSpy.findOneRandomly.and.returnValue(of(<Word>{value: 'panda'}));
-    const routeSpy = {queryParams: of(<Params>{language: 'fr'})}
+    wordServiceSpy.findOneRandomly.and.returnValue(of({value: 'panda'} as Word));
+    const routeSpy = {queryParams: of({language: 'fr'} as Params)};
     await TestBed.configureTestingModule({
       declarations: [ GameComponent ],
       providers: [
@@ -47,5 +47,5 @@ describe('GameComponent', () => {
       component.ngOnDestroy();
 
       expect(component.queryParamSubscription.closed).toBeTrue();
-  })
+  });
 });
