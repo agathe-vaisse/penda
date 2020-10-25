@@ -1,9 +1,13 @@
 package io.github.agathevaisse.language;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import spark.Request;
 import spark.Response;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static io.github.agathevaisse.DictionaryApp.API_ROOT_PATH;
 
@@ -17,10 +21,24 @@ public class LanguageApi {
     this.languageRepository = languageRepository;
   }
 
-  public List<Language> getAllLanguages(Request request, Response response) {
+  public String getAllLanguages(Request request, Response response) {
     response.header("Content-Type", "application/json");
     List<Language> languages = languageRepository.findAll();
     response.status(languages.isEmpty() ? 204 : 200);
-    return languages;
+    return toJson(languages);
   }
+
+    private String toJson(List<Language> languages) {
+        return new JSONArray(languages.stream()
+            .map(LanguageApi::visit)
+            .collect(Collectors.toList()))
+            .toString();
+    }
+
+    private static JSONObject visit(Language language) {
+        JSONObject result = new JSONObject();
+        result.put("code", language.getCode());
+        result.put("description", language.getDescription());
+        return result;
+    }
 }

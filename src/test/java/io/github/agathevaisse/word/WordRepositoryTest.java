@@ -62,6 +62,45 @@ public class WordRepositoryTest {
             .isEqualTo(new Word("panda"));
     }
 
+    @Test
+    void fetches_random_adjective_in_a_specified_language() {
+        given(httpResponse.body()).willReturn("{\n" +
+            "    \"n_results\": 1,\n" +
+            "    \"page_number\": 1,\n" +
+            "    \"results_per_page\": 1,\n" +
+            "    \"n_pages\": 1,\n" +
+            "    \"available_n_pages\": 1,\n" +
+            "    \"results\": [\n" +
+            "        {\n" +
+            "            \"id\": \"FR_DE00097898\",\n" +
+            "            \"language\": \"fr\",\n" +
+            "            \"headword\": [\n" +
+            "                {\n" +
+            "                    \"text\": \"domanial\",\n" +
+            "                    \"pos\": \"adjective\"\n" +
+            "                },\n" +
+            "                {\n" +
+            "                    \"text\": \"domaniale\",\n" +
+            "                    \"pos\": \"adjective\"\n" +
+            "                }\n" +
+            "            ],\n" +
+            "            \"senses\": [\n" +
+            "                {\n" +
+            "                    \"id\": \"FR_SE00101522\",\n" +
+            "                    \"definition\": \"qui appartient à l'État\"\n" +
+            "                }\n" +
+            "            ]\n" +
+            "        }" +
+            "\n" +
+            "    ]\n" +
+            "}");
+
+        Word word = wordRepository.findRandom("fr");
+
+        assertThat(word)
+            .isEqualTo(new Word("domanial"));
+    }
+
     @ParameterizedTest
     @ValueSource(ints = {403, 500})
     void returns_empty_words_if_server_returns_error_code(int errorCode) {

@@ -1,14 +1,12 @@
 package io.github.agathevaisse.word;
 
-import io.github.agathevaisse.functional.Either;
-import io.github.agathevaisse.http.HttpError;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import spark.Request;
 import spark.Response;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -34,19 +32,19 @@ public class WordApiTest {
         Request request = mock(Request.class);
         when(request.queryParams("language")).thenReturn("fr");
 
-        Either<HttpError, Word> result = wordApi.postRandomWord(request, response);
+        String result = wordApi.postRandomWord(request, response);
 
-        assertThat(result).isEqualTo(Either.right(word));
+        assertThat(result).isEqualTo("{\"value\":\"panda\"}");
         verify(response).header("Content-Type", "application/json");
         verify(response).status(200);
     }
 
     @Test
     void returns_bad_request_if_language_code_is_not_set() {
-        Either<HttpError, Word> result = wordApi.postRandomWord(mock(Request.class), response);
+        String result = wordApi.postRandomWord(mock(Request.class), response);
 
-        assertThat(result).isEqualTo(Either.<HttpError, Word>left(new HttpError("missing language code")));
-        verify(response).header("Content-Type", "text/plain");
+        assertThat(result).isEqualTo("{\"error\":\"missing language code\"}");
+        verify(response).header("Content-Type", "application/json");
         verify(response).status(400);
     }
 
