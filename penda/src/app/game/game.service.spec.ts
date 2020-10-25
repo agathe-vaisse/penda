@@ -24,7 +24,7 @@ describe('GameService', () => {
         return result as WordState;
     };
 
-    const initialState = state(wordToGuess, 8, new Set(), foundLetters(wordToGuess, []));
+    const initialState = state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(), foundLetters(wordToGuess, []));
 
     beforeEach(() => {
         TestBed.configureTestingModule({});
@@ -49,7 +49,7 @@ describe('GameService', () => {
     it('should emit new game state on new successful attempts', (done: DoneFn) => {
         const states = [
             initialState,
-            state(wordToGuess, 8, new Set(), foundLetters(wordToGuess, ['b']))
+            state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(), foundLetters(wordToGuess, ['b']))
         ];
 
         gameStates$.subscribe(expectStates(states, done));
@@ -60,7 +60,7 @@ describe('GameService', () => {
     it('should emit new game state on new failed attempts', (done: DoneFn) => {
         const states = [
             initialState,
-            state(wordToGuess, 8, new Set(['t']), foundLetters(wordToGuess, ['t']))
+            state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(['t']), foundLetters(wordToGuess, ['t']))
         ];
 
         gameStates$.subscribe(expectStates(states, done));
@@ -71,8 +71,8 @@ describe('GameService', () => {
     it('should emit new game state on new failed duplicate attempts', (done: DoneFn) => {
         const states = [
             initialState,
-            state(wordToGuess, 8, new Set(['t']), foundLetters(wordToGuess, ['t'])),
-            state(wordToGuess, 8, new Set(['t']), foundLetters(wordToGuess, ['t']))
+            state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(['t']), foundLetters(wordToGuess, ['t'])),
+            state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(['t']), foundLetters(wordToGuess, ['t']))
         ];
 
         gameStates$.subscribe(expectStates(states, done));
@@ -84,8 +84,8 @@ describe('GameService', () => {
     it('should emit new game state on new successful duplicate attempts', (done: DoneFn) => {
         const states = [
             initialState,
-            state(wordToGuess, 8, new Set(), foundLetters(wordToGuess, ['o'])),
-            state(wordToGuess, 8, new Set(), foundLetters(wordToGuess, ['o']))
+            state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(), foundLetters(wordToGuess, ['o'])),
+            state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(), foundLetters(wordToGuess, ['o']))
         ];
 
         gameStates$.subscribe(expectStates(states, done));
@@ -97,13 +97,13 @@ describe('GameService', () => {
     it('should ignore failed attempts when game is completed', (done: DoneFn) => {
         const states = [
             initialState,
-            state(wordToGuess, 8, new Set(), foundLetters(wordToGuess, ['b'])),
-            state(wordToGuess, 8, new Set(), foundLetters(wordToGuess, ['b', 'o'])),
-            state(wordToGuess, 8, new Set(), foundLetters(wordToGuess, ['b', 'o', 'n'])),
-            state(wordToGuess, 8, new Set(), foundLetters(wordToGuess, ['b', 'o', 'n', 'j'])),
-            state(wordToGuess, 8, new Set(), foundLetters(wordToGuess, ['b', 'o', 'n', 'j', 'u'])),
-            state(wordToGuess, 8, new Set(), foundLetters(wordToGuess, ['b', 'o', 'n', 'j', 'u', 'r'])),
-            state(wordToGuess, 8, new Set(), foundLetters(wordToGuess, ['b', 'o', 'n', 'j', 'u', 'r']))
+            state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(), foundLetters(wordToGuess, ['b'])),
+            state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(), foundLetters(wordToGuess, ['b', 'o'])),
+            state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(), foundLetters(wordToGuess, ['b', 'o', 'n'])),
+            state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(), foundLetters(wordToGuess, ['b', 'o', 'n', 'j'])),
+            state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(), foundLetters(wordToGuess, ['b', 'o', 'n', 'j', 'u'])),
+            state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(), foundLetters(wordToGuess, ['b', 'o', 'n', 'j', 'u', 'r'])),
+            state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(), foundLetters(wordToGuess, ['b', 'o', 'n', 'j', 'u', 'r']))
         ];
 
         gameStates$.subscribe(expectStates(states, done));
@@ -120,15 +120,14 @@ describe('GameService', () => {
     it('should ignore failed attempts when game is lost', (done: DoneFn) => {
         const states = [
             initialState,
-            state(wordToGuess, 8, new Set(['t']), foundLetters(wordToGuess, [])),
-            state(wordToGuess, 8, new Set(['t', 'y']), foundLetters(wordToGuess, [])),
-            state(wordToGuess, 8, new Set(['t', 'y', 'z']), foundLetters(wordToGuess, [])),
-            state(wordToGuess, 8, new Set(['t', 'y', 'z', 'a']), foundLetters(wordToGuess, [])),
-            state(wordToGuess, 8, new Set(['t', 'y', 'z', 'a', 'c']), foundLetters(wordToGuess, [])),
-            state(wordToGuess, 8, new Set(['t', 'y', 'z', 'a', 'c', 'w']), foundLetters(wordToGuess, [])),
-            state(wordToGuess, 8, new Set(['t', 'y', 'z', 'a', 'c', 'w', 'x']), foundLetters(wordToGuess, [])),
-            state(wordToGuess, 8, new Set(['t', 'y', 'z', 'a', 'c', 'w', 'x', 'd']), foundLetters(wordToGuess, [])),
-            state(wordToGuess, 8, new Set(['t', 'y', 'z', 'a', 'c', 'w', 'x', 'd']), foundLetters(wordToGuess, []))
+            state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(['t']), foundLetters(wordToGuess, [])),
+            state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(['t', 'y']), foundLetters(wordToGuess, [])),
+            state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(['t', 'y', 'z']), foundLetters(wordToGuess, [])),
+            state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(['t', 'y', 'z', 'a']), foundLetters(wordToGuess, [])),
+            state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(['t', 'y', 'z', 'a', 'c']), foundLetters(wordToGuess, [])),
+            state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(['t', 'y', 'z', 'a', 'c', 'w']), foundLetters(wordToGuess, [])),
+            state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(['t', 'y', 'z', 'a', 'c', 'w', 'x']), foundLetters(wordToGuess, [])),
+            state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(['t', 'y', 'z', 'a', 'c', 'w', 'x']), foundLetters(wordToGuess, []))
 
         ];
 
@@ -142,7 +141,6 @@ describe('GameService', () => {
         attemptSubject.next('w');
         attemptSubject.next('x');
         attemptSubject.next('d');
-        attemptSubject.next('g');
     });
 
     const expectStates = (expectedStates: GameState[], done: DoneFn) => {

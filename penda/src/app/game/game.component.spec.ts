@@ -62,7 +62,7 @@ describe('GameComponent', () => {
       expect(dom.querySelector('input#letter').getAttribute('maxlength')).toEqual('1');
       const placeholders = Array.from(dom.querySelectorAll('.placeholder'))
           .map((e: any) => e.textContent);
-      expect(placeholders).toEqual(['_', '_', '_', '_', '_']);
+      expect(placeholders).toEqual(['?', '?', '?', '?', '?']);
   });
 
   it('should update game state after attempt', (done: DoneFn) => {
