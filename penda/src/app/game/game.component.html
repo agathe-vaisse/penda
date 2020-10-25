@@ -1,11 +1,30 @@
-<div *ngIf="this.gameState$ | async as gameState">
-    <p id="attempts">{{ attemptsLeft(gameState) }}</p>
-    <span class="placeholder" *ngFor="let character of characters(gameState)">{{ character }}</span>
-    <form [formGroup]="gameForm" (ngSubmit)="onSubmit(gameForm.value)">
-        <input
-            formControlName="attempt"
-            [ngClass]="{'ng-invalid':attempt.invalid && (attempt.dirty || attempt.touched)}"
-            type="text" maxlength="1" id="letter" />
-        <button id="try" type="submit">Try</button>
-    </form>
+<div id="game" class="row justify-content-end" *ngIf="(this.gameState$ | async) as gameState">
+    <div class="col-md-4 col-sm-12">
+        <p id="attempts"
+           class="text-right"
+           [ngClass]="{'danger':gameState.failedAttempts.size >= 5}">{{ attemptsLeft(gameState) }}</p>
+    </div>
+    <div class="col-12 text-right" id="panda">
+        <img id="bamboos"
+             src='/assets/img/panda_bamboo_{{gameState.maxAttempts - gameState.failedAttempts.size}}.png'
+             alt='Panda with {{gameState.maxAttempts - gameState.failedAttempts.size}} bamboo(s) left'
+        />
+    </div>
+    <div id="phrase" class="col-12">
+        <span class="placeholder" *ngFor="let character of characters(gameState)">{{ character }}</span>
+        <form [formGroup]="gameForm"
+              (ngSubmit)="onSubmit(gameForm.value)"
+              class="col-md-2 col-sm-6">
+            <div class="form-group row">
+                <input
+                    autocomplete="off"
+                    class="form-control"
+                    formControlName="attempt"
+                    type="text"
+                    maxlength="1"
+                    id="letter"/>
+                <button id="try" type="submit" class="btn btn-primary">🎲</button>
+            </div>
+        </form>
+    </div>
 </div>

@@ -70,7 +70,7 @@ export class GameComponent implements OnInit, OnDestroy {
             if (gameState.wordState[letter]) {
                 return letter;
             }
-            return '_';
+            return '?';
         });
     }
 

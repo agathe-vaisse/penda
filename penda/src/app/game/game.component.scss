@@ -1,3 +1,138 @@
-.ng-invalid:not(form):not(.ng-pristine)  {
-    border: 2px solid #a94442;
+#game {
+    background: center no-repeat url("/assets/img/bamboo_forest.png");
+    background-size: cover;
+    border: 15px solid black;
+    border-radius: 30px;
+    padding-bottom: 15px;
+
+    #attempts {
+        &:not(.danger):before {
+            content: '❤️ left: ';
+        }
+
+        &.danger:before {
+            content: '😱 ❤️ left: ';
+        }
+
+        &.danger {
+            -webkit-animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) infinite;
+            animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) infinite;
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-perspective: 1000px;
+            perspective: 1000px;
+        }
+
+        margin-top: 15px;
+        margin-right: 15px;
+        font-size: 30pt;
+        text-shadow: 1px 1px 2px white;
+    }
+
+    #panda {
+        padding-right: 0;
+        #bamboos {
+            height: 50vh;
+        }
+    }
+
+    #phrase {
+        margin-top: 15px;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+
+
+        // Medium devices (tablets, 768px and up)
+        @media (min-width: 768px) {
+            form, input, button, .placeholder {
+                height: 75px;
+                font-size: 25pt;
+            }
+        }
+
+        .placeholder {
+            display: inline-flex;
+
+            &:last-of-type {
+                border-right: 1px solid black;
+            }
+
+            border: 1px solid black;
+            border-right: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.7);
+            align-items: center;
+            justify-content: center;
+        }
+
+        form {
+            .row {
+                justify-content: right;
+
+                input, button {
+                    border-radius: 0;
+                    border: 1px solid black;
+                    min-width: 40px;
+                    width: 45%;
+                    text-align: center;
+                }
+
+                input {
+                    border-right: none;
+                }
+
+                button {
+                    border-left: none;
+                }
+            }
+        }
+    }
+}
+
+// credits: https://css-tricks.com/snippets/css/shake-css-keyframe-animation/
+@-webkit-keyframes shake {
+    10%, 90% {
+        -webkit-transform: translate3d(-1px, 0, 0);
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%, 80% {
+        -webkit-transform: translate3d(2px, 0, 0);
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%, 50%, 70% {
+        -webkit-transform: translate3d(-4px, 0, 0);
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%, 60% {
+        -webkit-transform: translate3d(4px, 0, 0);
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+@keyframes shake {
+    10%, 90% {
+        -webkit-transform: translate3d(-1px, 0, 0);
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%, 80% {
+        -webkit-transform: translate3d(2px, 0, 0);
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%, 50%, 70% {
+        -webkit-transform: translate3d(-4px, 0, 0);
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%, 60% {
+        -webkit-transform: translate3d(4px, 0, 0);
+        transform: translate3d(4px, 0, 0);
+    }
 }

@@ -8,6 +8,8 @@ import {GameState, WordState} from './game-state';
 })
 export class GameService {
 
+    public static readonly MAX_ATTEMPTS = 7;
+
     init(wordToGuess: Word, input: Observable<string>): Observable<GameState> {
         let currentState = GameService.initialState(wordToGuess);
         const subject = new BehaviorSubject<GameState>(currentState);
@@ -22,7 +24,7 @@ export class GameService {
         return {
             word: wordToGuess,
             wordState: GameService.initialWordState(wordToGuess),
-            maxAttempts: 8,
+            maxAttempts: GameService.MAX_ATTEMPTS,
             failedAttempts: new Set<string>()
         } as GameState;
     }
