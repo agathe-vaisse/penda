@@ -60,7 +60,7 @@ describe('AppComponent', () => {
             .toEqual([english.description, french.description]);
     });
 
-    it('fails to submit a blank language', () => {
+    it('should fail to submit a blank language', () => {
         fixture.detectChanges(); // needed by [formGroup] directive
         dom.querySelector('button[type=submit]').click();
 

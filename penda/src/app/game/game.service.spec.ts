@@ -68,7 +68,7 @@ describe('GameService', () => {
         attemptSubject.next('t');
     });
 
-    it('should emit new game state on new failed duplicate attempts', (done: DoneFn) => {
+    it('should emit same game state on new failed duplicate attempts', (done: DoneFn) => {
         const states = [
             initialState,
             state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(['t']), foundLetters(wordToGuess, ['t'])),
@@ -81,7 +81,7 @@ describe('GameService', () => {
         attemptSubject.next('t');
     });
 
-    it('should emit new game state on new successful duplicate attempts', (done: DoneFn) => {
+    it('should emit same game state on new successful duplicate attempts', (done: DoneFn) => {
         const states = [
             initialState,
             state(wordToGuess, GameService.MAX_ATTEMPTS, new Set(), foundLetters(wordToGuess, ['o'])),

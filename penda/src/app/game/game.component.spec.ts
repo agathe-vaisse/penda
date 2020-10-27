@@ -72,7 +72,7 @@ describe('GameComponent', () => {
         expect(placeholders).toEqual(['?', '?', '?', '?', '?']);
     });
 
-    it('should update game state after attempt', (done: DoneFn) => {
+    it('should emit key strokes', (done: DoneFn) => {
         const attempt = 'c';
 
         component.inputs.asObservable().subscribe((char) => {
@@ -85,7 +85,7 @@ describe('GameComponent', () => {
     });
 
 
-    it('should clear input after each attempt', () => {
+    it('should clear input after attempt', () => {
         submitGameForm('c');
         fixture.detectChanges();
 
@@ -93,11 +93,13 @@ describe('GameComponent', () => {
     });
 
     // TODO: find out why subscription is already closed
-    xit('destroys subscriptions on destroy', () => {
+    xit('should close subscriptions', () => {
         expect(component.queryParamSubscription.closed).toBeFalse();
+        expect(component.wordSubscription.closed).toBeFalse();
 
         component.ngOnDestroy();
 
         expect(component.queryParamSubscription.closed).toBeTrue();
+        expect(component.wordSubscription.closed).toBeTrue();
     });
 });
