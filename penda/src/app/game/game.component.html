@@ -1,6 +1,6 @@
 <ng-container *ngIf="(this.gameState$ | async) as gameState">
     <div class="row justify-content-end" id="game"
-         [ngClass]="{'completed':isGameWon(gameState)}">
+         [ngClass]="{'completed':isGameCompleted(gameState)}">
         <div class="col-8">
             <p id="failed-attempts">
             <span *ngFor="let failedAttempt of failedAttempts(gameState)"
@@ -26,7 +26,7 @@
                   class="col-md-2 col-sm-6">
                 <div class="form-group row">
                     <input
-                        [readonly]="isGameWon(gameState)"
+                        [readonly]="isGameCompleted(gameState)"
                         autocomplete="off"
                         class="form-control"
                         formControlName="attempt"
@@ -34,7 +34,7 @@
                         maxlength="1"
                         type="text"/>
                     <button
-                        [disabled]="isGameWon(gameState)"
+                        [disabled]="isGameCompleted(gameState)"
                         class="btn btn-primary"
                         id="try"
                         type="submit">🎲
@@ -44,8 +44,10 @@
         </div>
     </div>
     <div id="game-over"
-         *ngIf="isGameWon(gameState)"
-         class="alert alert-success"
-         role="alert">Congratulations!
+         *ngIf="isGameCompleted(gameState)"
+         class="alert"
+         [ngClass]="{'alert-success': isGameWon(gameState), 'alert-danger': isGameLost(gameState)}"
+         role="alert">
+        {{ isGameWon(gameState) ? '🥳 Congratulations!' : '🙃 Better luck next time?' }}
     </div>
 </ng-container>

@@ -97,7 +97,20 @@ describe('GameComponent', () => {
         });
         fixture.detectChanges();
 
-        expect(dom.querySelector('#game-over').textContent).toContain('Congratulations!');
+        expect(dom.querySelector('#game-over.alert-success').textContent.trim()).toEqual('🥳 Congratulations!');
+        expect(dom.querySelector('#letter[readonly]')).toBeTruthy();
+        expect(dom.querySelector('#try[disabled]')).toBeTruthy();
+    });
+
+    it('should stop game and show message when the game is lost', () => {
+        gameStateSubject.next({
+            ...initialGameState,
+            maxAttempts: 1, // that's cheating, I know
+            failedAttempts: new Set('z')
+        });
+        fixture.detectChanges();
+
+        expect(dom.querySelector('#game-over.alert-danger').textContent.trim()).toEqual('🙃 Better luck next time?');
         expect(dom.querySelector('#letter[readonly]')).toBeTruthy();
         expect(dom.querySelector('#try[disabled]')).toBeTruthy();
     });
