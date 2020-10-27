@@ -27,6 +27,10 @@ export class LanguageSelectionComponent {
         this.languages$ = this.languageService.findAll();
     }
 
+    get language(): AbstractControl {
+        return this.languageForm.get('language');
+    }
+
     onSubmit(value: any): void {
         if (this.languageForm.valid) {
             this.router.navigate(['/game'], {
@@ -34,9 +38,5 @@ export class LanguageSelectionComponent {
                 queryParams: {language: value.language}
             });
         }
-    }
-
-    get language(): AbstractControl {
-        return this.languageForm.get('language');
     }
 }

@@ -11,37 +11,39 @@ import java.util.Set;
 
 public class Filters {
 
-  public static Filter contentNegotiationFilter(String acceptableValue, String... acceptableValues) {
-    Set<String> values = new HashSet<>(1 + acceptableValues.length);
-    values.add(acceptableValue);
-    values.addAll(Arrays.asList(acceptableValues));
-    return new ContentNegotiationFilter(values);
-  }
+    public static Filter contentNegotiationFilter(String acceptableValue, String... acceptableValues) {
+        Set<String> values = new HashSet<>(1 + acceptableValues.length);
+        values.add(acceptableValue);
+        values.addAll(Arrays.asList(acceptableValues));
+        return new ContentNegotiationFilter(values);
+    }
 }
 
 class ContentNegotiationFilter extends Filter {
 
-  private final Set<String> acceptableValues;
+    private final Set<String> acceptableValues;
 
-  public ContentNegotiationFilter(Set<String> acceptableValues) {
-    this.acceptableValues = acceptableValues;
-  }
-
-  @Override public void doFilter(HttpExchange exchange, Chain chain) throws IOException {
-    Optional<String> acceptValue = exchange.getRequestHeaders()
-                                           .get("Accept")
-                                           .stream()
-                                           .filter(acceptableValues::contains)
-                                           .findFirst();
-    if (acceptValue.isEmpty()) {
-      exchange.sendResponseHeaders(406, 0);
-      exchange.getResponseBody().close();
-    } else {
-      chain.doFilter(exchange);
+    public ContentNegotiationFilter(Set<String> acceptableValues) {
+        this.acceptableValues = acceptableValues;
     }
-  }
 
-  @Override public String description() {
-    return "implements naive media type negotiation";
-  }
+    @Override
+    public void doFilter(HttpExchange exchange, Chain chain) throws IOException {
+        Optional<String> acceptValue = exchange.getRequestHeaders()
+            .get("Accept")
+            .stream()
+            .filter(acceptableValues::contains)
+            .findFirst();
+        if (acceptValue.isEmpty()) {
+            exchange.sendResponseHeaders(406, 0);
+            exchange.getResponseBody().close();
+        } else {
+            chain.doFilter(exchange);
+        }
+    }
+
+    @Override
+    public String description() {
+        return "implements naive media type negotiation";
+    }
 }

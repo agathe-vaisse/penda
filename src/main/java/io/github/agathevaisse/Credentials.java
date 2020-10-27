@@ -10,67 +10,70 @@ import java.util.Objects;
 
 public class Credentials {
 
-  private final String username;
+    private final String username;
 
-  private final char[] password;
+    private final char[] password;
 
-  private Credentials(String username, char[] password) {
-    this.username = username;
-    this.password = password;
-  }
+    private Credentials(String username, char[] password) {
+        this.username = username;
+        this.password = password;
+    }
 
-  public static Credentials of(String name, char[] password) {
-    return new Credentials(name, password);
-  }
+    public static Credentials of(String name, char[] password) {
+        return new Credentials(name, password);
+    }
 
-  public String getUsername() {
-    return username;
-  }
+    private static byte[] asByteArray(char[] chars, Charset encoding) {
+        CharBuffer charBuffer = CharBuffer.wrap(chars);
+        ByteBuffer byteBuffer = encoding.encode(charBuffer);
+        byte[] bytes = Arrays.copyOfRange(byteBuffer.array(),
+            byteBuffer.position(), byteBuffer.limit());
+        Arrays.fill(byteBuffer.array(), (byte) 0);
+        return bytes;
+    }
 
-  public char[] getPassword() {
-    return password;
-  }
+    public String getUsername() {
+        return username;
+    }
 
-  public String basicEncode() {
-    Charset encoding = StandardCharsets.UTF_8;
-    byte[] username = this.username.getBytes(encoding);
-    byte[] separator = ":".getBytes(encoding);
-    byte[] password = asByteArray(this.password, encoding);
-    ByteBuffer buffer = ByteBuffer.allocate(username.length + separator.length + password.length)
-                                  .put(username)
-                                  .put(separator)
-                                  .put(password)
-                                  .compact();
-    return Base64.getEncoder().encodeToString(buffer.array());
-  }
+    public char[] getPassword() {
+        return password;
+    }
 
-  @Override public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Credentials that = (Credentials) o;
-    return Objects.equals(username, that.username) &&
-           Arrays.equals(password, that.password);
-  }
+    public String basicEncode() {
+        Charset encoding = StandardCharsets.UTF_8;
+        byte[] username = this.username.getBytes(encoding);
+        byte[] separator = ":".getBytes(encoding);
+        byte[] password = asByteArray(this.password, encoding);
+        ByteBuffer buffer = ByteBuffer.allocate(username.length + separator.length + password.length)
+            .put(username)
+            .put(separator)
+            .put(password)
+            .compact();
+        return Base64.getEncoder().encodeToString(buffer.array());
+    }
 
-  @Override public int hashCode() {
-    int result = Objects.hash(username);
-    result = 31 * result + Arrays.hashCode(password);
-    return result;
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Credentials that = (Credentials) o;
+        return Objects.equals(username, that.username) &&
+            Arrays.equals(password, that.password);
+    }
 
-  @Override public String toString() {
-    return "Credentials{" +
-           "username='" + username + '\'' +
-           ", password=(hidden)" +
-           '}';
-  }
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(username);
+        result = 31 * result + Arrays.hashCode(password);
+        return result;
+    }
 
-  private static byte[] asByteArray(char[] chars, Charset encoding) {
-    CharBuffer charBuffer = CharBuffer.wrap(chars);
-    ByteBuffer byteBuffer = encoding.encode(charBuffer);
-    byte[] bytes = Arrays.copyOfRange(byteBuffer.array(),
-                                      byteBuffer.position(), byteBuffer.limit());
-    Arrays.fill(byteBuffer.array(), (byte) 0);
-    return bytes;
-  }
+    @Override
+    public String toString() {
+        return "Credentials{" +
+            "username='" + username + '\'' +
+            ", password=(hidden)" +
+            '}';
+    }
 }

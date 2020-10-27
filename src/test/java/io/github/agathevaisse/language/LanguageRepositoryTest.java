@@ -17,37 +17,37 @@ import static org.mockito.Mockito.mock;
 
 class LanguageRepositoryTest {
 
-  HttpClient httpClient = mock(HttpClient.class);
+    HttpClient httpClient = mock(HttpClient.class);
 
-  @SuppressWarnings("unchecked")
-  HttpResponse<String> httpResponse = mock(HttpResponse.class);
+    @SuppressWarnings("unchecked")
+    HttpResponse<String> httpResponse = mock(HttpResponse.class);
 
-  LanguageRepository languageRepository = new LanguageRepository("http://example.com", httpClient);
+    LanguageRepository languageRepository = new LanguageRepository("http://example.com", httpClient);
 
-  @BeforeEach
-  void setUp() throws Exception {
-    given(httpClient.send(any(), ArgumentMatchers.<BodyHandler<String>>any())).willReturn(httpResponse);
-  }
+    @BeforeEach
+    void setUp() throws Exception {
+        given(httpClient.send(any(), ArgumentMatchers.<BodyHandler<String>>any())).willReturn(httpResponse);
+    }
 
-  @Test
-  void parses_json_response() {
-    given(httpResponse.body()).willReturn("{\"language_names\":  {\"fr\":  \"French\", \"en\":  \"English\"}}");
+    @Test
+    void parses_json_response() {
+        given(httpResponse.body()).willReturn("{\"language_names\":  {\"fr\":  \"French\", \"en\":  \"English\"}}");
 
-    List<Language> languages = languageRepository.findAll();
+        List<Language> languages = languageRepository.findAll();
 
-    assertThat(languages).containsExactlyInAnyOrder(
-        new Language("fr", "French"),
-        new Language("en", "English")
-    );
-  }
+        assertThat(languages).containsExactlyInAnyOrder(
+            new Language("fr", "French"),
+            new Language("en", "English")
+        );
+    }
 
-  @Test
-  void fails_parsing_unsuccessful_response() {
-    given(httpResponse.statusCode()).willReturn(500);
-    given(httpResponse.body()).willReturn("{\"status\": 0, \"message\":  \"broken\"}");
+    @Test
+    void fails_parsing_unsuccessful_response() {
+        given(httpResponse.statusCode()).willReturn(500);
+        given(httpResponse.body()).willReturn("{\"status\": 0, \"message\":  \"broken\"}");
 
-    assertThatThrownBy(languageRepository::findAll)
-        .isInstanceOf(RuntimeException.class)
-        .hasMessage("Failed to fetch languages: status=0, message=broken");
-  }
+        assertThatThrownBy(languageRepository::findAll)
+            .isInstanceOf(RuntimeException.class)
+            .hasMessage("Failed to fetch languages: status=0, message=broken");
+    }
 }
