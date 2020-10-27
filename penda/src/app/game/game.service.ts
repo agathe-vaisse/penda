@@ -10,16 +10,6 @@ export class GameService {
 
     public static readonly MAX_ATTEMPTS = 7;
 
-    init(wordToGuess: Word, input: Observable<string>): Observable<GameState> {
-        let currentState = GameService.initialState(wordToGuess);
-        const subject = new BehaviorSubject<GameState>(currentState);
-        input.subscribe((attempt: string) => {
-            currentState = GameService.update(currentState, attempt);
-            subject.next(currentState);
-        });
-        return subject.asObservable();
-    }
-
     private static initialState(wordToGuess: Word): GameState {
         return {
             word: wordToGuess,
@@ -68,5 +58,15 @@ export class GameService {
 
     private static isLost(currentState: GameState): boolean {
         return currentState.failedAttempts.size === currentState.maxAttempts;
+    }
+
+    init(wordToGuess: Word, input: Observable<string>): Observable<GameState> {
+        let currentState = GameService.initialState(wordToGuess);
+        const subject = new BehaviorSubject<GameState>(currentState);
+        input.subscribe((attempt: string) => {
+            currentState = GameService.update(currentState, attempt);
+            subject.next(currentState);
+        });
+        return subject.asObservable();
     }
 }

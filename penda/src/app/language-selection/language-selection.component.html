@@ -1,12 +1,12 @@
-<form [formGroup]="languageForm"
-      (ngSubmit)="onSubmit(languageForm.value)"
+<form (ngSubmit)="onSubmit(languageForm.value)"
+      [formGroup]="languageForm"
       [ngClass]="{'was-validated':language.invalid && (language.dirty || language.touched)}">
     <div class="form-group row">
-        <label for="languages" class="col-sm-2 col-form-label">Select a language</label>
+        <label class="col-sm-2 col-form-label" for="languages">Select a language</label>
         <div class="col-sm-10">
-            <select id="languages"
+            <select class="form-control form-control-lg"
                     formControlName="language"
-                    class="form-control form-control-lg"
+                    id="languages"
                     required="required">
                 <option value=""></option>
                 <option *ngFor="let language of (languages$ | async)"
@@ -16,8 +16,8 @@
     </div>
     <div class="form-group row">
         <div class="col-sm-2">
-            <button id="language-submit" type="submit"
-                    class="btn btn-primary">Start game
+            <button class="btn btn-primary" id="language-submit"
+                    type="submit">Start game
             </button>
         </div>
     </div>

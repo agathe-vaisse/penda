@@ -10,82 +10,82 @@ import {GameState, WordState} from './game-state';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 describe('GameComponent', () => {
-  let component: GameComponent;
-  let fixture: ComponentFixture<GameComponent>;
-  let dom;
-  let gameServiceSpy;
-  let wordServiceSpy;
-  const wordToGuess = {value: 'panda'} as Word;
-  let initialGameState: GameState;
+    let component: GameComponent;
+    let fixture: ComponentFixture<GameComponent>;
+    let dom;
+    let gameServiceSpy;
+    let wordServiceSpy;
+    const wordToGuess = {value: 'panda'} as Word;
+    let initialGameState: GameState;
 
-  beforeEach(async () => {
-    initialGameState = {
-        wordState: {
-            p: false,
-            a: false,
-            n: false,
-            d: false
-        } as WordState,
-        failedAttempts: new Set(),
-        word: wordToGuess,
-        maxAttempts: 8
-    } as GameState;
-    gameServiceSpy = jasmine.createSpyObj<GameService>(['init']);
-    gameServiceSpy.init.and.returnValue(of(initialGameState));
-    wordServiceSpy = jasmine.createSpyObj<WordService>(['findOneRandomly']);
-    wordServiceSpy.findOneRandomly.and.returnValue(of(wordToGuess));
-    const routeSpy = {queryParams: of({language: 'fr'} as Params)};
-    await TestBed.configureTestingModule({
-      declarations: [ GameComponent ],
-      providers: [
-        {provide: GameService, useValue: gameServiceSpy},
-        {provide: WordService, useValue: wordServiceSpy},
-        {provide: ActivatedRoute, useValue: routeSpy}
-      ],
-      imports: [
-        FormsModule,
-        ReactiveFormsModule,
-      ],
-    })
-    .compileComponents();
-  });
+    beforeEach(async () => {
+        initialGameState = {
+            wordState: {
+                p: false,
+                a: false,
+                n: false,
+                d: false
+            } as WordState,
+            failedAttempts: new Set(),
+            word: wordToGuess,
+            maxAttempts: 8
+        } as GameState;
+        gameServiceSpy = jasmine.createSpyObj<GameService>(['init']);
+        gameServiceSpy.init.and.returnValue(of(initialGameState));
+        wordServiceSpy = jasmine.createSpyObj<WordService>(['findOneRandomly']);
+        wordServiceSpy.findOneRandomly.and.returnValue(of(wordToGuess));
+        const routeSpy = {queryParams: of({language: 'fr'} as Params)};
+        await TestBed.configureTestingModule({
+            declarations: [GameComponent],
+            providers: [
+                {provide: GameService, useValue: gameServiceSpy},
+                {provide: WordService, useValue: wordServiceSpy},
+                {provide: ActivatedRoute, useValue: routeSpy}
+            ],
+            imports: [
+                FormsModule,
+                ReactiveFormsModule,
+            ],
+        })
+            .compileComponents();
+    });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(GameComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-    dom = fixture.nativeElement;
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(GameComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+        dom = fixture.nativeElement;
+    });
 
-  it('should display current game state', () => {
-      expect(dom.querySelector('#attempts').textContent).toEqual(`${initialGameState.maxAttempts} / ${initialGameState.maxAttempts}`);
-      expect(dom.querySelector('input#letter').getAttribute('maxlength')).toEqual('1');
-      const placeholders = Array.from(dom.querySelectorAll('.placeholder'))
-          .map((e: any) => e.textContent);
-      expect(placeholders).toEqual(['?', '?', '?', '?', '?']);
-  });
+    it('should display current game state', () => {
+        expect(dom.querySelector('#attempts').textContent).toEqual(`${initialGameState.maxAttempts} / ${initialGameState.maxAttempts}`);
+        expect(dom.querySelector('input#letter').getAttribute('maxlength')).toEqual('1');
+        const placeholders = Array.from(dom.querySelectorAll('.placeholder'))
+            .map((e: any) => e.textContent);
+        expect(placeholders).toEqual(['?', '?', '?', '?', '?']);
+    });
 
-  it('should update game state after attempt', (done: DoneFn) => {
-      const attempt = 'c';
+    it('should update game state after attempt', (done: DoneFn) => {
+        const attempt = 'c';
 
-      component.inputs.asObservable().subscribe((char) => {
-        expect(char).toEqual(attempt);
-        done();
-      });
+        component.inputs.asObservable().subscribe((char) => {
+            expect(char).toEqual(attempt);
+            done();
+        });
 
-      const attemptInput = dom.querySelector('#letter');
-      attemptInput.value = attempt;
-      attemptInput.dispatchEvent(new Event('input'));
-      dom.querySelector('#try').click();
-      fixture.detectChanges();
-  });
+        const attemptInput = dom.querySelector('#letter');
+        attemptInput.value = attempt;
+        attemptInput.dispatchEvent(new Event('input'));
+        dom.querySelector('#try').click();
+        fixture.detectChanges();
+    });
 
-  // TODO: find out why subscription is already closed
-  xit('destroys subscriptions on destroy', () => {
-      expect(component.queryParamSubscription.closed).toBeFalse();
+    // TODO: find out why subscription is already closed
+    xit('destroys subscriptions on destroy', () => {
+        expect(component.queryParamSubscription.closed).toBeFalse();
 
-      component.ngOnDestroy();
+        component.ngOnDestroy();
 
-      expect(component.queryParamSubscription.closed).toBeTrue();
-  });
+        expect(component.queryParamSubscription.closed).toBeTrue();
+    });
 });

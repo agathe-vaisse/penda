@@ -1,7 +1,7 @@
 import {TestBed} from '@angular/core/testing';
 
 import {GameService} from './game.service';
-import {Observable, of, Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {Word} from './word';
 import {GameState, WordState} from './game-state';
 
@@ -12,7 +12,7 @@ describe('GameService', () => {
     const wordToGuess = {value: 'bonjour'} as Word;
 
     const state = (word: Word, maxAttempts: number, failedAttempts: Set<string>, wordState: WordState) => {
-        return { word, maxAttempts, failedAttempts, wordState } as GameState;
+        return {word, maxAttempts, failedAttempts, wordState} as GameState;
     };
 
     const foundLetters = (word: Word, attempts: string []) => {

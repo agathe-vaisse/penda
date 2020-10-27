@@ -1,6 +1,5 @@
 package io.github.agathevaisse;
 
-import io.github.agathevaisse.Credentials;
 import io.github.agathevaisse.http.BasicAuthenticator;
 
 import java.net.http.HttpClient;

@@ -9,17 +9,18 @@ import java.net.URL;
 
 public class BasicAuthenticator extends Authenticator {
 
-  private final Credentials credentials;
+    private final Credentials credentials;
 
-  public BasicAuthenticator(Credentials credentials) {
+    public BasicAuthenticator(Credentials credentials) {
 
-    this.credentials = credentials;
-  }
+        this.credentials = credentials;
+    }
 
-  @Override public PasswordAuthentication requestPasswordAuthenticationInstance(String host, InetAddress addr, int port,
-                                                                                String protocol, String prompt, String scheme,
-                                                                                URL url, RequestorType reqType) {
+    @Override
+    public PasswordAuthentication requestPasswordAuthenticationInstance(String host, InetAddress addr, int port,
+                                                                        String protocol, String prompt, String scheme,
+                                                                        URL url, RequestorType reqType) {
 
-    return new PasswordAuthentication(credentials.getUsername(), credentials.getPassword());
-  }
+        return new PasswordAuthentication(credentials.getUsername(), credentials.getPassword());
+    }
 }

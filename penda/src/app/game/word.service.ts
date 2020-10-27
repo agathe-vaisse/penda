@@ -6,16 +6,17 @@ import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class WordService {
 
-  constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {
+    }
 
-  public findOneRandomly(languageCode: LanguageCode): Observable<Word> {
-    return this.http.post(`/api/words?language=${languageCode.code}`, {})
-    .pipe(
-      map((data: any) => data as Word)
-    );
-  }
+    public findOneRandomly(languageCode: LanguageCode): Observable<Word> {
+        return this.http.post(`/api/words?language=${languageCode.code}`, {})
+            .pipe(
+                map((data: any) => data as Word)
+            );
+    }
 }

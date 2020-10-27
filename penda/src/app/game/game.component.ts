@@ -13,19 +13,14 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 })
 export class GameComponent implements OnInit, OnDestroy {
 
-    private queryParams$: Observable<Params>;
-
     gameState$: Observable<GameState>;
-
     // visible for testing
     queryParamSubscription: Subscription;
-
-    private wordSubscription: Subscription;
-
     gameForm: FormGroup;
-
     // visible for testing
     inputs: Subject<string>;
+    private queryParams$: Observable<Params>;
+    private wordSubscription: Subscription;
 
     constructor(route: ActivatedRoute,
                 formBuilder: FormBuilder,
@@ -40,6 +35,10 @@ export class GameComponent implements OnInit, OnDestroy {
             ]]
         });
         this.queryParams$ = route.queryParams;
+    }
+
+    get attempt(): AbstractControl {
+        return this.gameForm.get('attempt');
     }
 
     ngOnInit(): void {
@@ -76,10 +75,6 @@ export class GameComponent implements OnInit, OnDestroy {
             }
             return '?';
         });
-    }
-
-    get attempt(): AbstractControl {
-        return this.gameForm.get('attempt');
     }
 
     onSubmit(value: any): void {
