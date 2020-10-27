@@ -79,6 +79,10 @@ export class GameComponent implements OnInit, OnDestroy {
         });
     }
 
+    isGameWon(currentState: GameState): boolean {
+        return Object.values(currentState.wordState).reduce((acc, current) => acc && current);
+    }
+
     onSubmit(value: any): void {
         if (this.gameForm.valid) {
             this.inputs.next(value.attempt as string);

@@ -5,6 +5,10 @@
     border-radius: 30px;
     padding-bottom: 15px;
 
+    &.completed {
+        opacity: 0.2;
+    }
+
     #failed-attempts, #attempts {
         margin-top: 15px;
         margin-right: 15px;
@@ -104,6 +108,15 @@
             }
         }
     }
+}
+
+#game-over {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    font-size: 30pt;
+    text-align: center;
 }
 
 // credits: https://css-tricks.com/snippets/css/shake-css-keyframe-animation/
