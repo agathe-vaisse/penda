@@ -2,4 +2,4 @@
 
 set -eu
 
-mvn --quiet exec:java -Dexec.mainClass=io.github.agathevaisse.DictionaryApp
+mvn --quiet verify exec:java "$@" -Dexec.mainClass=io.github.agathevaisse.DictionaryApp
