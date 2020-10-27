@@ -10,9 +10,7 @@ export class GamePage {
 
     guess(letter: string): promise.Promise<void> {
         const input = element(by.id('letter'));
-        return input
-            .clear()
-            .then(() => input.sendKeys(letter))
+        return input.sendKeys(letter)
             .then(() => element(by.id('try')).click());
     }
 

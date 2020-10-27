@@ -23,7 +23,7 @@ describe('GameComponent', () => {
         attemptInput.value = attempt;
         attemptInput.dispatchEvent(new Event('input'));
         dom.querySelector('#try').click();
-    }
+    };
 
     beforeEach(async () => {
         initialGameState = {
@@ -80,21 +80,17 @@ describe('GameComponent', () => {
             done();
         });
 
-       submitGameForm(attempt);
+        submitGameForm(attempt);
         fixture.detectChanges();
     });
 
 
     it('should clear input after each attempt', () => {
-        const attempt = 'c';
-
-        submitGameForm(attempt);
+        submitGameForm('c');
         fixture.detectChanges();
 
-        const inputValue = dom.querySelector('#letter').value;
-
-        expect(inputValue).toEqual("");
-    })
+        expect(dom.querySelector('#letter').value).toEqual('');
+    });
 
     // TODO: find out why subscription is already closed
     xit('destroys subscriptions on destroy', () => {
