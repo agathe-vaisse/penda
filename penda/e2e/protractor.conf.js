@@ -18,6 +18,7 @@ exports.config = {
             'args': ['--headless']
         }
     },
+    // highlightDelay: 1500, // slow mode
     directConnect: false,
     baseUrl: 'http://localhost:4200/',
     framework: 'jasmine',

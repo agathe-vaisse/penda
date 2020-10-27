@@ -14,6 +14,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 export class GameComponent implements OnInit, OnDestroy {
 
     gameState$: Observable<GameState>;
+    private languageCode: LanguageCode;
     // visible for testing
     queryParamSubscription: Subscription;
     gameForm: FormGroup;
@@ -43,8 +44,8 @@ export class GameComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.queryParamSubscription = this.queryParams$.subscribe((params) => {
-            const languageCode = {code: params.language} as LanguageCode;
-            const word$ = this.wordService.findOneRandomly(languageCode);
+            this.languageCode = {code: params.language} as LanguageCode;
+            const word$ = this.wordService.findOneRandomly(this.languageCode);
             this.wordSubscription = word$.subscribe((word) => {
                 this.inputs = new Subject<string>();
                 this.gameState$ = this.gameService.init(word, this.inputs.asObservable());
@@ -83,4 +84,8 @@ export class GameComponent implements OnInit, OnDestroy {
         }
     }
 
+    failedAttempts(gameState: GameState): string[] {
+        return Array.from(gameState.failedAttempts)
+            .sort((s1, s2) => s1.localeCompare(s2, this.languageCode.code));
+    }
 }
