@@ -79,8 +79,16 @@ export class GameComponent implements OnInit, OnDestroy {
         });
     }
 
+    isGameCompleted(currentState: GameState): boolean {
+        return this.isGameWon(currentState) || this.isGameLost(currentState);
+    }
+
     isGameWon(currentState: GameState): boolean {
         return Object.values(currentState.wordState).reduce((acc, current) => acc && current);
+    }
+
+    isGameLost(currentState: GameState): boolean {
+        return currentState.failedAttempts.size === currentState.maxAttempts;
     }
 
     onSubmit(value: any): void {
