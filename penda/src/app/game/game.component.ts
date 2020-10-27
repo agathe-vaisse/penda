@@ -21,7 +21,8 @@ export class GameComponent implements OnInit, OnDestroy {
     // visible for testing
     inputs: Subject<string>;
     private queryParams$: Observable<Params>;
-    private wordSubscription: Subscription;
+    // visible for testing
+    wordSubscription: Subscription;
 
     constructor(route: ActivatedRoute,
                 formBuilder: FormBuilder,

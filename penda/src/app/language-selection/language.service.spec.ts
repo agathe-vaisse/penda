@@ -30,7 +30,7 @@ describe('LanguageService', () => {
         httpMock.verify();
     });
 
-    it('should list all languages', (done) => {
+    it('should find all languages', (done) => {
         service.findAll().subscribe((languages: Language[]) => {
             expect(languages).toEqual([english, french]);
             done();
