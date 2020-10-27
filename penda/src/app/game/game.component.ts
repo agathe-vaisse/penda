@@ -61,8 +61,12 @@ export class GameComponent implements OnInit, OnDestroy {
         });
     }
 
-    attemptsLeft(gameState: GameState): string {
-        return `${gameState.maxAttempts - gameState.failedAttempts.size} / ${gameState.maxAttempts}`;
+    attemptsRatio(gameState: GameState): string {
+        return `${this.attemptsLeft(gameState)} / ${gameState.maxAttempts}`;
+    }
+
+    attemptsLeft(gameState: GameState): number {
+        return gameState.maxAttempts - gameState.failedAttempts.size;
     }
 
     characters(gameState: GameState): string[] {
