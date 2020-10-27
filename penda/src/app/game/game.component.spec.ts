@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {GameComponent} from './game.component';
-import {of} from 'rxjs';
+import {BehaviorSubject, of} from 'rxjs';
 import {WordService} from './word.service';
 import {Word} from './word';
 import {ActivatedRoute, Params} from '@angular/router';
@@ -16,7 +16,18 @@ describe('GameComponent', () => {
     let gameServiceSpy;
     let wordServiceSpy;
     const wordToGuess = {value: 'panda'} as Word;
-    let initialGameState: GameState;
+    const initialGameState = {
+        wordState: {
+            p: false,
+            a: false,
+            n: false,
+            d: false
+        } as WordState,
+        failedAttempts: new Set(),
+        word: wordToGuess,
+        maxAttempts: 8
+    } as GameState;
+    let gameStateSubject;
 
     const submitGameForm = (attempt: string) => {
         const attemptInput = dom.querySelector('#letter');
@@ -26,19 +37,9 @@ describe('GameComponent', () => {
     };
 
     beforeEach(async () => {
-        initialGameState = {
-            wordState: {
-                p: false,
-                a: false,
-                n: false,
-                d: false
-            } as WordState,
-            failedAttempts: new Set(),
-            word: wordToGuess,
-            maxAttempts: 8
-        } as GameState;
         gameServiceSpy = jasmine.createSpyObj<GameService>(['init']);
-        gameServiceSpy.init.and.returnValue(of(initialGameState));
+        gameStateSubject = new BehaviorSubject<GameState>(initialGameState);
+        gameServiceSpy.init.and.returnValue(gameStateSubject.asObservable());
         wordServiceSpy = jasmine.createSpyObj<WordService>(['findOneRandomly']);
         wordServiceSpy.findOneRandomly.and.returnValue(of(wordToGuess));
         const routeSpy = {queryParams: of({language: 'fr'} as Params)};
@@ -72,7 +73,7 @@ describe('GameComponent', () => {
         expect(placeholders).toEqual(['?', '?', '?', '?', '?']);
     });
 
-    it('should emit key strokes', (done: DoneFn) => {
+    it('should update game state after attempt', (done: DoneFn) => {
         const attempt = 'c';
 
         component.inputs.asObservable().subscribe((char) => {
@@ -84,8 +85,24 @@ describe('GameComponent', () => {
         fixture.detectChanges();
     });
 
+    it('should stop game and show message when the game is won', () => {
+        gameStateSubject.next({
+            ...initialGameState,
+            wordState: {
+                p: true,
+                a: true,
+                n: true,
+                d: true
+            } as WordState
+        });
+        fixture.detectChanges();
 
-    it('should clear input after attempt', () => {
+        expect(dom.querySelector('#game-over').textContent).toContain('Congratulations!');
+        expect(dom.querySelector('#letter[readonly]')).toBeTruthy();
+        expect(dom.querySelector('#try[disabled]')).toBeTruthy();
+    });
+
+    it('should clear input after each attempt', () => {
         submitGameForm('c');
         fixture.detectChanges();
 
@@ -93,13 +110,11 @@ describe('GameComponent', () => {
     });
 
     // TODO: find out why subscription is already closed
-    xit('should close subscriptions', () => {
+    xit('destroys subscriptions on destroy', () => {
         expect(component.queryParamSubscription.closed).toBeFalse();
-        expect(component.wordSubscription.closed).toBeFalse();
 
         component.ngOnDestroy();
 
         expect(component.queryParamSubscription.closed).toBeTrue();
-        expect(component.wordSubscription.closed).toBeTrue();
     });
 });
