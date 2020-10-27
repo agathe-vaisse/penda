@@ -8,6 +8,7 @@ describe('workspace-project App', () => {
 
     beforeEach(() => {
         languageSelectionPage = new LanguageSelectionPage();
+        gamePage = new GamePage();
         languageSelectionPage.navigateTo();
     });
 
@@ -17,8 +18,15 @@ describe('workspace-project App', () => {
 
     it('should start game after language selection', () => {
         languageSelectionPage.selectLanguage('French');
-        gamePage = new GamePage();
         expect(gamePage.isCurrentPage()).toBe(true);
+    });
+
+    it('should display failed attempts in sorted order', () => {
+        languageSelectionPage.selectLanguage('French');
+        gamePage.guess('é');
+        gamePage.guess('b');
+
+        expect(gamePage.getFailedAttempts()).toEqual(['b', 'é']);
     });
 
     afterEach(async () => {
