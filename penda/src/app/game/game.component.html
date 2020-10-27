@@ -2,12 +2,12 @@
     <div class="col-md-4 col-sm-12">
         <p id="attempts"
            class="text-right"
-           [ngClass]="{'danger':gameState.failedAttempts.size >= 5}">{{ attemptsLeft(gameState) }}</p>
+           [ngClass]="{'danger':gameState.failedAttempts.size >= 5}">{{ attemptsRatio(gameState) }}</p>
     </div>
     <div class="col-12 text-right" id="panda">
         <img id="bamboos"
-             src='/assets/img/panda_bamboo_{{gameState.maxAttempts - gameState.failedAttempts.size}}.png'
-             alt='Panda with {{gameState.maxAttempts - gameState.failedAttempts.size}} bamboo(s) left'
+             src='/assets/img/panda_bamboo_{{ attemptsLeft(gameState) }}.png'
+             alt='Panda with {{ attemptsLeft(gameState) }} bamboo(s) left'
         />
     </div>
     <div id="phrase" class="col-12">
