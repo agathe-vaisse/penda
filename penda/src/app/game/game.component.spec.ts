@@ -18,6 +18,13 @@ describe('GameComponent', () => {
     const wordToGuess = {value: 'panda'} as Word;
     let initialGameState: GameState;
 
+    const submitGameForm = (attempt: string) => {
+        const attemptInput = dom.querySelector('#letter');
+        attemptInput.value = attempt;
+        attemptInput.dispatchEvent(new Event('input'));
+        dom.querySelector('#try').click();
+    }
+
     beforeEach(async () => {
         initialGameState = {
             wordState: {
@@ -73,12 +80,21 @@ describe('GameComponent', () => {
             done();
         });
 
-        const attemptInput = dom.querySelector('#letter');
-        attemptInput.value = attempt;
-        attemptInput.dispatchEvent(new Event('input'));
-        dom.querySelector('#try').click();
+       submitGameForm(attempt);
         fixture.detectChanges();
     });
+
+
+    it('should clear input after each attempt', () => {
+        const attempt = 'c';
+
+        submitGameForm(attempt);
+        fixture.detectChanges();
+
+        const inputValue = dom.querySelector('#letter').value;
+
+        expect(inputValue).toEqual("");
+    })
 
     // TODO: find out why subscription is already closed
     xit('destroys subscriptions on destroy', () => {

@@ -81,6 +81,7 @@ export class GameComponent implements OnInit, OnDestroy {
     onSubmit(value: any): void {
         if (this.gameForm.valid) {
             this.inputs.next(value.attempt as string);
+            this.gameForm.reset();
         }
     }
 
