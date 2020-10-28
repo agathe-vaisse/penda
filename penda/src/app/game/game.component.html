@@ -1,32 +1,32 @@
-<ng-container *ngIf="(this.gameState$ | async) as gameState">
+<ng-container *ngIf="(this.gameState$ | async) as game">
     <div class="row justify-content-end" id="game"
-         [ngClass]="{'completed':isGameCompleted(gameState)}">
+         [ngClass]="{'completed':game.isCompleted()}">
         <div class="col-8">
             <p id="failed-attempts">
-            <span *ngFor="let failedAttempt of failedAttempts(gameState)"
+            <span *ngFor="let failedAttempt of failedAttempts(game)"
                   class="failed-attempt">{{ failedAttempt }}</span>
             </p>
         </div>
         <div class="col-4">
-            <p [ngClass]="{'danger':gameState.failedAttempts.size >= 5}"
+            <p [ngClass]="{'danger':game.failedAttempts.size >= 5}"
                class="text-right"
-               id="attempts">{{ attemptsRatio(gameState) }}</p>
+               id="attempts">{{ attemptsRatio(game) }}</p>
         </div>
 
         <div class="col-12 text-right" id="panda">
-            <img alt='Panda with {{ attemptsLeft(gameState) }} bamboo(s) left'
+            <img alt='Panda with {{ game.leftAttempts }} bamboo(s) left'
                  id="bamboos"
-                 src='/assets/img/panda_bamboo_{{ attemptsLeft(gameState) }}.png'
+                 src='/assets/img/panda_bamboo_{{ game.leftAttempts }}.png'
             />
         </div>
         <div class="col-12" id="phrase">
-            <span *ngFor="let character of characters(gameState)" class="placeholder">{{ character }}</span>
+            <span *ngFor="let character of game.displayableChars('?')" class="placeholder">{{ character }}</span>
             <form (ngSubmit)="onSubmit(gameForm.value)"
                   [formGroup]="gameForm"
                   class="col-md-2 col-sm-6">
                 <div class="form-group row">
                     <input
-                        [readonly]="isGameCompleted(gameState)"
+                        [readonly]="game.isCompleted()"
                         autocomplete="off"
                         class="form-control"
                         formControlName="attempt"
@@ -34,7 +34,7 @@
                         maxlength="1"
                         type="text"/>
                     <button
-                        [disabled]="isGameCompleted(gameState)"
+                        [disabled]="game.isCompleted()"
                         class="btn btn-primary"
                         id="try"
                         type="submit">🎲
@@ -44,10 +44,10 @@
         </div>
     </div>
     <div id="game-over"
-         *ngIf="isGameCompleted(gameState)"
+         *ngIf="game.isCompleted()"
          class="alert"
-         [ngClass]="{'alert-success': isGameWon(gameState), 'alert-danger': isGameLost(gameState)}"
+         [ngClass]="{'alert-success': game.isWon(), 'alert-danger': game.isLost()}"
          role="alert">
-        {{ isGameWon(gameState) ? '🥳 Congratulations!' : '🙃 Better luck next time?' }}
+        {{ game.isWon() ? '🥳 Congratulations!' : '🙃 Better luck next time?' }}
     </div>
 </ng-container>

@@ -63,32 +63,7 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     attemptsRatio(gameState: GameState): string {
-        return `${this.attemptsLeft(gameState)} / ${gameState.maxAttempts}`;
-    }
-
-    attemptsLeft(gameState: GameState): number {
-        return gameState.maxAttempts - gameState.failedAttempts.size;
-    }
-
-    characters(gameState: GameState): string[] {
-        return gameState.word.value.split('').map((letter) => {
-            if (gameState.wordState[letter]) {
-                return letter;
-            }
-            return '?';
-        });
-    }
-
-    isGameCompleted(currentState: GameState): boolean {
-        return this.isGameWon(currentState) || this.isGameLost(currentState);
-    }
-
-    isGameWon(currentState: GameState): boolean {
-        return Object.values(currentState.wordState).reduce((acc, current) => acc && current);
-    }
-
-    isGameLost(currentState: GameState): boolean {
-        return currentState.failedAttempts.size === currentState.maxAttempts;
+        return `${gameState.leftAttempts} / ${gameState.maxAttempts}`;
     }
 
     onSubmit(value: any): void {
