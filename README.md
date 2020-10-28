@@ -32,6 +32,7 @@ Make sure to have [Node](https://nodejs.org) installed on your machine.
 Then, run:
 
 ```shell
+cd penda
 npm install
 npx ng serve
 ```
