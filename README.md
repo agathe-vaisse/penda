@@ -12,6 +12,8 @@ It is also a fun game!
 
 ### Backend
 
+#### Lexicala-based backend
+
 Make sure you have created a [Lexicala](https://www.lexicala.com/) account.
 
 Then, all you need to do is:
@@ -25,6 +27,19 @@ Lexicala password:>
 The backend will prompt you for your Lexicala password.
 
 The backend runs on port 8080 by default (can be tweaked via `application.properties` or setting a `PORT` envvar).
+
+#### Fake server
+
+Make sure to have [Node](https://nodejs.org) installed on your machine.
+
+If you do not want to create a Lexicala account, you can instead run a fake server:
+
+```shell
+cd penda
+npm run fake-server
+```
+
+The server will start on port 8080.
 
 ### Frontend
 
