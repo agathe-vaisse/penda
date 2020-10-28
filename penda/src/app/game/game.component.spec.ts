@@ -16,17 +16,7 @@ describe('GameComponent', () => {
     let gameServiceSpy;
     let wordServiceSpy;
     const wordToGuess = {value: 'panda'} as Word;
-    const initialGameState = {
-        wordState: {
-            p: false,
-            a: false,
-            n: false,
-            d: false
-        } as WordState,
-        failedAttempts: new Set(),
-        word: wordToGuess,
-        maxAttempts: 8
-    } as GameState;
+    const initialGameState = GameState.createInitialGameState(wordToGuess);
     let gameStateSubject;
 
     const submitGameForm = (attempt: string) => {
@@ -86,15 +76,12 @@ describe('GameComponent', () => {
     });
 
     it('should stop game and show message when the game is won', () => {
-        gameStateSubject.next({
-            ...initialGameState,
-            wordState: {
-                p: true,
-                a: true,
-                n: true,
-                d: true
-            } as WordState
-        });
+        gameStateSubject.next(initialGameState
+            .computeNextState('p')
+            .computeNextState('a')
+            .computeNextState('n')
+            .computeNextState('d')
+        );
         fixture.detectChanges();
 
         expect(dom.querySelector('#game-over.alert-success').textContent.trim()).toEqual('🥳 Congratulations!');
@@ -103,11 +90,16 @@ describe('GameComponent', () => {
     });
 
     it('should stop game and show message when the game is lost', () => {
-        gameStateSubject.next({
-            ...initialGameState,
-            maxAttempts: 1, // that's cheating, I know
-            failedAttempts: new Set('z')
-        });
+        gameStateSubject.next(initialGameState
+            .computeNextState('b')
+            .computeNextState('c')
+            .computeNextState('e')
+            .computeNextState('f')
+            .computeNextState('g')
+            .computeNextState('h')
+            .computeNextState('i')
+            .computeNextState('j')
+        );
         fixture.detectChanges();
 
         expect(dom.querySelector('#game-over.alert-danger').textContent.trim()).toEqual('🙃 Better luck next time?');
