@@ -49,5 +49,6 @@
          [ngClass]="{'alert-success': game.isWon(), 'alert-danger': game.isLost()}"
          role="alert">
         {{ game.isWon() ? '🥳 Congratulations!' : '🙃 Better luck next time?' }}
+        <button id="play-again" (click)="playAgain()">Wanna play again?</button>
     </div>
 </ng-container>

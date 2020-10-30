@@ -8,6 +8,7 @@ import {ActivatedRoute, Params} from '@angular/router';
 import {GameService} from './game.service';
 import {GameState, WordState} from './game-state';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {SpyLocation} from "@angular/common/testing";
 
 describe('GameComponent', () => {
     let component: GameComponent;
@@ -15,6 +16,7 @@ describe('GameComponent', () => {
     let dom;
     let gameServiceSpy;
     let wordServiceSpy;
+    let locationSpy;
     const wordToGuess = {value: 'panda'} as Word;
     const initialGameState = GameState.createInitialGameState(wordToGuess);
     let gameStateSubject;
@@ -38,7 +40,8 @@ describe('GameComponent', () => {
             providers: [
                 {provide: GameService, useValue: gameServiceSpy},
                 {provide: WordService, useValue: wordServiceSpy},
-                {provide: ActivatedRoute, useValue: routeSpy}
+                {provide: ActivatedRoute, useValue: routeSpy},
+                {provide: SpyLocation, useValue: locationSpy}
             ],
             imports: [
                 FormsModule,
@@ -84,7 +87,7 @@ describe('GameComponent', () => {
         );
         fixture.detectChanges();
 
-        expect(dom.querySelector('#game-over.alert-success').textContent.trim()).toEqual('🥳 Congratulations!');
+        expect(dom.querySelector('#game-over.alert-success').textContent.trim()).toContain('🥳 Congratulations!');
         expect(dom.querySelector('#letter[readonly]')).toBeTruthy();
         expect(dom.querySelector('#try[disabled]')).toBeTruthy();
     });
@@ -102,7 +105,7 @@ describe('GameComponent', () => {
         );
         fixture.detectChanges();
 
-        expect(dom.querySelector('#game-over.alert-danger').textContent.trim()).toEqual('🙃 Better luck next time?');
+        expect(dom.querySelector('#game-over.alert-danger').textContent.trim()).toContain('🙃 Better luck next time?');
         expect(dom.querySelector('#letter[readonly]')).toBeTruthy();
         expect(dom.querySelector('#try[disabled]')).toBeTruthy();
     });
@@ -113,6 +116,12 @@ describe('GameComponent', () => {
 
         expect(dom.querySelector('#letter').value).toEqual('');
     });
+
+    it('should redirect to language component', () => {
+        dom.querySelector('#play-again').click();
+        expect(locationSpy.back)
+            .toHaveBeenCalledTimes(1)
+    })
 
     // TODO: find out why subscription is already closed
     xit('destroys subscriptions on destroy', () => {
