@@ -6,8 +6,9 @@ import {WordService} from './word.service';
 import {Word} from './word';
 import {ActivatedRoute, Params} from '@angular/router';
 import {GameService} from './game.service';
-import {GameState, WordState} from './game-state';
+import {GameState} from './game-state';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('GameComponent', () => {
     let component: GameComponent;
@@ -38,11 +39,12 @@ describe('GameComponent', () => {
             providers: [
                 {provide: GameService, useValue: gameServiceSpy},
                 {provide: WordService, useValue: wordServiceSpy},
-                {provide: ActivatedRoute, useValue: routeSpy}
+                {provide: ActivatedRoute, useValue: routeSpy},
             ],
             imports: [
                 FormsModule,
                 ReactiveFormsModule,
+                RouterTestingModule
             ],
         })
             .compileComponents();
@@ -84,7 +86,7 @@ describe('GameComponent', () => {
         );
         fixture.detectChanges();
 
-        expect(dom.querySelector('#game-over.alert-success').textContent.trim()).toEqual('🥳 Congratulations!');
+        expect(dom.querySelector('#game-over.alert-success').textContent.trim()).toContain('🥳 Congratulations!');
         expect(dom.querySelector('#letter[readonly]')).toBeTruthy();
         expect(dom.querySelector('#try[disabled]')).toBeTruthy();
     });
@@ -102,7 +104,7 @@ describe('GameComponent', () => {
         );
         fixture.detectChanges();
 
-        expect(dom.querySelector('#game-over.alert-danger').textContent.trim()).toEqual('🙃 Better luck next time?');
+        expect(dom.querySelector('#game-over.alert-danger').textContent.trim()).toContain('🙃 Better luck next time?');
         expect(dom.querySelector('#letter[readonly]')).toBeTruthy();
         expect(dom.querySelector('#try[disabled]')).toBeTruthy();
     });
@@ -112,6 +114,21 @@ describe('GameComponent', () => {
         fixture.detectChanges();
 
         expect(dom.querySelector('#letter').value).toEqual('');
+    });
+
+    it('should allow players to play again when game is complete', () => {
+        gameStateSubject.next(initialGameState
+            .computeNextState('p')
+            .computeNextState('a')
+            .computeNextState('n')
+            .computeNextState('d')
+        );
+        fixture.detectChanges();
+
+        const playAgainButton = dom.querySelector('#play-again');
+
+        expect(playAgainButton).toBeTruthy();
+        expect(playAgainButton.href).toMatch(/^https?:\/\/[^:]+:?(\d)*\/$/);
     });
 
     // TODO: find out why subscription is already closed
