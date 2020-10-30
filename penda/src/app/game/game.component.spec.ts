@@ -6,9 +6,9 @@ import {WordService} from './word.service';
 import {Word} from './word';
 import {ActivatedRoute, Params} from '@angular/router';
 import {GameService} from './game.service';
-import {GameState, WordState} from './game-state';
+import {GameState} from './game-state';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {SpyLocation} from "@angular/common/testing";
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('GameComponent', () => {
     let component: GameComponent;
@@ -16,7 +16,6 @@ describe('GameComponent', () => {
     let dom;
     let gameServiceSpy;
     let wordServiceSpy;
-    let locationSpy;
     const wordToGuess = {value: 'panda'} as Word;
     const initialGameState = GameState.createInitialGameState(wordToGuess);
     let gameStateSubject;
@@ -41,11 +40,11 @@ describe('GameComponent', () => {
                 {provide: GameService, useValue: gameServiceSpy},
                 {provide: WordService, useValue: wordServiceSpy},
                 {provide: ActivatedRoute, useValue: routeSpy},
-                {provide: SpyLocation, useValue: locationSpy}
             ],
             imports: [
                 FormsModule,
                 ReactiveFormsModule,
+                RouterTestingModule
             ],
         })
             .compileComponents();
@@ -117,11 +116,20 @@ describe('GameComponent', () => {
         expect(dom.querySelector('#letter').value).toEqual('');
     });
 
-    it('should redirect to language component', () => {
-        dom.querySelector('#play-again').click();
-        expect(locationSpy.back)
-            .toHaveBeenCalledTimes(1)
-    })
+    it('should allow players to play again when game is complete', () => {
+        gameStateSubject.next(initialGameState
+            .computeNextState('p')
+            .computeNextState('a')
+            .computeNextState('n')
+            .computeNextState('d')
+        );
+        fixture.detectChanges();
+
+        const playAgainButton = dom.querySelector('#play-again');
+
+        expect(playAgainButton).toBeTruthy();
+        expect(playAgainButton.href).toMatch(/^https?:\/\/[^:]+:?(\d)*\/$/);
+    });
 
     // TODO: find out why subscription is already closed
     xit('destroys subscriptions on destroy', () => {

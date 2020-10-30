@@ -6,7 +6,6 @@ import {LanguageCode} from '../language-selection/language';
 import {GameService} from './game.service';
 import {GameState} from './game-state';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { Location } from '@angular/common';
 
 @Component({
     templateUrl: './game.component.html',
@@ -28,8 +27,7 @@ export class GameComponent implements OnInit, OnDestroy {
     constructor(route: ActivatedRoute,
                 formBuilder: FormBuilder,
                 private wordService: WordService,
-                private gameService: GameService,
-                private location: Location) {
+                private gameService: GameService) {
 
         this.gameForm = formBuilder.group({
             attempt: ['', [
@@ -78,9 +76,5 @@ export class GameComponent implements OnInit, OnDestroy {
     failedAttempts(gameState: GameState): string[] {
         return Array.from(gameState.failedAttempts)
             .sort((s1, s2) => s1.localeCompare(s2, this.languageCode.code));
-    }
-
-    playAgain(): void {
-        this.location.back();
     }
 }
