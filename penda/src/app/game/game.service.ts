@@ -1,17 +1,22 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Word} from "./word";
-import {BehaviorSubject, Observable, of} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {GameState} from "./game-state";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class GameService {
 
-  constructor() { }
+    constructor() {
+    }
 
-    init(word: Word, stringObservable: Observable<string>): Observable<GameState> {
-      const currentState = new GameState();
-        return new BehaviorSubject(currentState).asObservable();
+    init(word: Word, keystrokes$: Observable<string>): Observable<GameState> {
+        const currentState = new GameState(word);
+        const subject = new BehaviorSubject(currentState);
+        keystrokes$.subscribe((keystroke) => {
+            subject.next(currentState.computeNextState(keystroke));
+        });
+        return subject.asObservable();
     }
 }

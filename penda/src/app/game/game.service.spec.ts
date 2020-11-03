@@ -33,7 +33,7 @@ describe('GameService', () => {
         const keystrokes = new Subject<string>();
         const gameState$ = service.init(word, keystrokes.asObservable());
         const keystroke = 'c';
-        const expectedState = new GameState();
+        const expectedState = new GameState(word);
         expectedState.failedAttempts = new Set(keystroke);
         expectedState.leftAttempts = expectedState.maxAttempts - 1;
 

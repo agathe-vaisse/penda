@@ -49,7 +49,7 @@ export class GameComponent implements OnInit, OnDestroy {
             const word$ = this.wordService.findOneRandomly(this.languageCode);
             this.wordSubscription = word$.subscribe((word) => {
                 this.inputs = new Subject<string>();
-                this.gameState$ = of<GameState>(new GameState());
+                this.gameState$ = this.gameService.init(word, this.inputs.asObservable());
             });
         });
     }

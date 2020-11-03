@@ -27,7 +27,7 @@ describe('GameComponent', () => {
 
     beforeEach(async () => {
         gameServiceSpy = jasmine.createSpyObj<GameService>(['init']);
-        gameServiceSpy.init.and.returnValue(of());
+        gameServiceSpy.init.and.returnValue(of(new GameState(wordToGuess)));
         wordServiceSpy = jasmine.createSpyObj<WordService>(['findOneRandomly']);
         wordServiceSpy.findOneRandomly.and.returnValue(of(wordToGuess));
         const routeSpy = {queryParams: of({language: 'fr'} as Params)};
