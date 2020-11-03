@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Params} from '@angular/router';
-import {Observable, Subject, Subscription} from 'rxjs';
+import {Observable, of, Subject, Subscription} from 'rxjs';
 import {WordService} from './word.service';
 import {LanguageCode} from '../language-selection/language';
 import {GameService} from './game.service';
@@ -49,7 +49,7 @@ export class GameComponent implements OnInit, OnDestroy {
             const word$ = this.wordService.findOneRandomly(this.languageCode);
             this.wordSubscription = word$.subscribe((word) => {
                 this.inputs = new Subject<string>();
-                this.gameState$ = this.gameService.init(word, this.inputs.asObservable());
+                this.gameState$ = of<GameState>(new GameState());
             });
         });
     }
